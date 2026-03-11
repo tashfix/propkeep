@@ -12,8 +12,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 
 const categoryColors: Record<Expense["category"], string> = {
   repair: "bg-red-100 text-red-700",
-  maintenance: "bg-[#EDE8E2] text-[#6B5F55]",
-  improvement: "bg-[#E8EDF0] text-[#4A6070]",
+  maintenance: "bg-blue-100 text-blue-700",
+  improvement: "bg-purple-100 text-purple-700",
   supply: "bg-green-100 text-green-700",
   other: "bg-gray-100 text-gray-700",
 };

@@ -41,7 +41,7 @@ function Lightbox({ src, onClose }: { src: string; onClose: () => void }) {
 
 const platformStyles: Record<ServiceProvider["platform"], string> = {
   TaskRabbit: "bg-[#0D9B4E]/10 text-[#0D9B4E]",
-  Thumbtack: "bg-[#EDE8E2] text-[#6B5F55]",
+  Thumbtack: "bg-blue-50 text-blue-700",
   Angi: "bg-orange-50 text-orange-700",
 };
 
@@ -106,7 +106,7 @@ function ServiceSuggestionDialog({
   return (
     <Dialog open={open} onOpenChange={handleOpen}>
       <DialogTrigger asChild>
-        <button className="text-xs text-[#8B5E3C] hover:text-[#6B4428] hover:underline flex items-center gap-1 transition-colors">
+        <button className="text-xs text-indigo-600 hover:text-indigo-800 hover:underline flex items-center gap-1 transition-colors">
           {isManageMode ? (
             <><CalendarCheck className="w-3 h-3" />Manage Service Call</>
           ) : (
@@ -172,7 +172,7 @@ function ServiceSuggestionDialog({
                 {appliance && (
                   <div className="space-y-1.5">
                     <Label className="text-xs">Appliance</Label>
-                    <div className="flex items-center gap-1.5 bg-[#EDE8E2] border border-[#D8D2C8] text-[#6B5F55] text-xs font-medium px-3 py-2 rounded-lg">
+                    <div className="flex items-center gap-1.5 bg-blue-50 border border-blue-100 text-blue-700 text-xs font-medium px-3 py-2 rounded-lg">
                       <Package className="w-3.5 h-3.5 shrink-0" />
                       <span>
                         {appliance.name}
@@ -507,7 +507,7 @@ export default function TicketsTab() {
 
                     {linkedAppliance && (
                       <div className="flex items-center gap-1.5 mt-2">
-                        <span className="inline-flex items-center gap-1 bg-[#EDE8E2] text-[#6B5F55] border border-[#D8D2C8] text-xs font-medium px-2 py-0.5 rounded-full">
+                        <span className="inline-flex items-center gap-1 bg-blue-50 text-blue-700 border border-blue-100 text-xs font-medium px-2 py-0.5 rounded-full">
                           <Package className="w-3 h-3" />
                           {linkedAppliance.name}
                           {linkedAppliance.brand && ` · ${linkedAppliance.brand}`}
@@ -540,7 +540,7 @@ export default function TicketsTab() {
                       {ticket.imageUrl && (
                         <button
                           onClick={() => setLightboxSrc(ticket.imageUrl!)}
-                          className="flex items-center gap-1 text-xs text-[#8B5E3C] hover:text-[#6B4428] hover:underline transition-colors"
+                          className="flex items-center gap-1 text-xs text-blue-600 hover:text-blue-800 hover:underline transition-colors"
                         >
                           <ImageIcon className="w-3 h-3" />
                           Image 1

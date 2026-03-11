@@ -15,9 +15,8 @@ const config: Config = {
     },
     extend: {
       fontFamily: {
-        sans:    ["DM Sans", "system-ui", "sans-serif"],
-        heading: ["Fraunces", "Georgia", "serif"],
-        mono:    ["DM Mono", "monospace"],
+        sans:    ["Inter", "system-ui", "sans-serif"],
+        heading: ["Sora", "system-ui", "sans-serif"],
       },
       colors: {
         border:     "hsl(var(--border))",
@@ -53,26 +52,11 @@ const config: Config = {
           DEFAULT:    "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        brand: {
-          clay:      "#E07228",
-          clayLight: "#F5E6D8",
-          umber:     "#8B5E3C",
-          sand:      "#E8C9A0",
-          sage:      "#7A9E8E",
-          sageLight: "#D4E8E1",
-        },
       },
       borderRadius: {
         lg: "var(--radius)",
-        md: "calc(var(--radius) - 4px)",
-        sm: "calc(var(--radius) - 8px)",
-      },
-      boxShadow: {
-        whisper: "0 1px 3px rgba(28,25,23,0.06)",
-        soft:    "0 4px 12px rgba(28,25,23,0.08)",
-        raised:  "0 8px 24px rgba(28,25,23,0.10)",
-        float:   "0 16px 48px rgba(28,25,23,0.14)",
-        glow:    "0 2px 12px rgba(224,114,40,0.35), inset 0 1px 0 rgba(255,255,255,0.15)",
+        md: "calc(var(--radius) - 2px)",
+        sm: "calc(var(--radius) - 4px)",
       },
       keyframes: {
         "accordion-down": {

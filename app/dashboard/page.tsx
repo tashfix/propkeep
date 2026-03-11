@@ -27,7 +27,7 @@ function getGreeting() {
 }
 
 function ActionRow({ dot, onClick, children }: { dot: "red" | "amber" | "blue"; onClick?: () => void; children: React.ReactNode }) {
-  const colors = { red: "bg-[#C0604A]", amber: "bg-[#C4866A]", blue: "bg-[#7A9E8E]" };
+  const colors = { red: "bg-red-500", amber: "bg-amber-500", blue: "bg-blue-500" };
   return (
     <div
       onClick={onClick}
@@ -77,9 +77,9 @@ export default function Dashboard() {
   ];
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-[#F8F9FA]">
       {/* Topbar */}
-      <header className="bg-[rgba(250,248,244,0.90)] backdrop-blur-[20px] border-b border-border sticky top-0 z-40">
+      <header className="bg-white border-b border-gray-100 sticky top-0 z-40">
         <div className="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <div className="w-7 h-7 rounded-lg bg-primary flex items-center justify-center">
@@ -105,14 +105,14 @@ export default function Dashboard() {
 
               {/* Dropdown panel */}
               {notifOpen && (
-                <div className="absolute right-0 top-full mt-2 w-80 bg-card rounded-[16px] border border-border shadow-raised z-50 overflow-hidden">
+                <div className="absolute right-0 top-full mt-2 w-80 bg-white rounded-xl border border-gray-100 shadow-lg z-50 overflow-hidden">
                   <div className="px-4 py-3 border-b border-border">
                     <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Notifications</p>
                   </div>
                   <div className="p-2 space-y-0.5 max-h-80 overflow-y-auto">
                     {notifCount === 0 ? (
-                      <div className="flex items-center gap-2.5 py-3 px-1 text-sm text-[#3D7A68]">
-                        <CheckCircle2 className="w-4 h-4 text-[#3D7A68] shrink-0" />
+                      <div className="flex items-center gap-2.5 py-3 px-1 text-sm text-green-700">
+                        <CheckCircle2 className="w-4 h-4 text-green-500 shrink-0" />
                         All caught up — no urgent items.
                       </div>
                     ) : (
@@ -168,12 +168,12 @@ export default function Dashboard() {
         {/* Stats row */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
           {[
-            { label: "Properties", value: properties.length, sub: `${properties.reduce((s, p) => s + p.units.length, 0)} units`, color: "text-primary", bg: "bg-[#F2E4DA]", icon: Building2 },
-            { label: "Open Tickets", value: openTickets, sub: `${tickets.filter(t => t.status === "in-progress").length} in progress`, color: openTickets > 0 ? "text-[#A34030]" : "text-[#3D7A68]", bg: "bg-[#F5DDD8]", icon: Wrench },
-            { label: "Overdue Tasks", value: overdueTasks, sub: `${recurringTasks.length} total tasks`, color: overdueTasks > 0 ? "text-[#A06B20]" : "text-[#3D7A68]", bg: "bg-[#F5EDDB]", icon: Bell },
-            { label: "This Month", value: `$${monthExpenses.toLocaleString()}`, sub: `$${totalExpenses.toLocaleString()} all time`, color: "text-foreground", bg: "bg-muted", icon: Receipt },
+            { label: "Properties", value: properties.length, sub: `${properties.reduce((s, p) => s + p.units.length, 0)} units`, color: "text-primary", bg: "bg-blue-50", icon: Building2 },
+            { label: "Open Tickets", value: openTickets, sub: `${tickets.filter(t => t.status === "in-progress").length} in progress`, color: openTickets > 0 ? "text-red-600" : "text-green-600", bg: "bg-red-50", icon: Wrench },
+            { label: "Overdue Tasks", value: overdueTasks, sub: `${recurringTasks.length} total tasks`, color: overdueTasks > 0 ? "text-amber-600" : "text-green-600", bg: "bg-amber-50", icon: Bell },
+            { label: "This Month", value: `$${monthExpenses.toLocaleString()}`, sub: `$${totalExpenses.toLocaleString()} all time`, color: "text-foreground", bg: "bg-gray-50", icon: Receipt },
           ].map(stat => (
-            <div key={stat.label} className="bg-card rounded-[16px] p-4 border border-border shadow-whisper">
+            <div key={stat.label} className="bg-white rounded-xl p-4 border border-gray-100 shadow-sm">
               <div className="flex items-center justify-between mb-2">
                 <p className="text-xs text-muted-foreground font-medium">{stat.label}</p>
                 <div className={`w-8 h-8 rounded-lg ${stat.bg} flex items-center justify-center`}>
@@ -188,8 +188,8 @@ export default function Dashboard() {
 
         {/* Onboarding empty state */}
         {properties.length === 0 && (
-          <div className="bg-card rounded-2xl border-2 border-dashed border-[#E8C9A0] p-12 text-center mb-8">
-            <div className="w-16 h-16 bg-[#F2E4DA] rounded-2xl flex items-center justify-center mx-auto mb-4">
+          <div className="bg-white rounded-2xl border-2 border-dashed border-blue-200 p-12 text-center mb-8">
+            <div className="w-16 h-16 bg-blue-50 rounded-2xl flex items-center justify-center mx-auto mb-4">
               <Building2 className="w-8 h-8 text-primary" />
             </div>
             <h2 className="font-heading text-xl font-bold mb-2">Add your first property to get started</h2>
@@ -206,14 +206,14 @@ export default function Dashboard() {
         )}
 
         {/* Tab navigation */}
-        <div className="flex gap-1 bg-muted rounded-[14px] p-1 mb-6 w-fit">
+        <div className="flex gap-1 bg-white rounded-xl p-1 border border-gray-100 shadow-sm mb-6 w-fit">
           {tabs.map(tab => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center gap-2 px-4 py-2 rounded-[10px] text-sm font-medium transition-all ${
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
                 activeTab === tab.id
-                  ? "bg-card text-foreground shadow-whisper font-semibold"
+                  ? "bg-primary text-white shadow-sm"
                   : "text-muted-foreground hover:text-foreground"
               }`}
             >
@@ -224,7 +224,7 @@ export default function Dashboard() {
         </div>
 
         {/* Tab content */}
-        <div className="bg-card rounded-[16px] border border-border p-6 shadow-whisper">
+        <div className="bg-white rounded-xl border border-gray-100 p-6 shadow-sm">
           {activeTab === "overview" && <PropertiesTab />}
           {activeTab === "tickets" && <TicketsTab />}
           {activeTab === "recurring" && <RecurringTab />}

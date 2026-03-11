@@ -16,7 +16,7 @@ import { Textarea } from "@/components/ui/textarea";
 
 const platformStyles: Record<ServiceProvider["platform"], string> = {
   TaskRabbit: "bg-[#0D9B4E]/10 text-[#0D9B4E]",
-  Thumbtack: "bg-[#EDE8E2] text-[#6B5F55]",
+  Thumbtack: "bg-blue-50 text-blue-700",
   Angi: "bg-orange-50 text-orange-700",
 };
 
@@ -91,7 +91,7 @@ function RecurringServiceDialog({
   return (
     <Dialog open={open} onOpenChange={handleOpen}>
       <DialogTrigger asChild>
-        <button className="text-xs text-[#8B5E3C] hover:text-[#6B4428] hover:underline flex items-center gap-1 transition-colors">
+        <button className="text-xs text-indigo-600 hover:text-indigo-800 hover:underline flex items-center gap-1 transition-colors">
           {isManageMode ? (
             <><CalendarCheck className="w-3 h-3" />Manage Service Call</>
           ) : (
@@ -413,7 +413,7 @@ export default function RecurringTab() {
                   </div>
                   <div className="flex items-center gap-2 shrink-0 ml-3">
                     <RecurringServiceDialog task={task} propertyAddress={property?.address ?? ""} />
-                    <button onClick={() => completeTask(task.id)} className="text-xs bg-[#E07228] text-white px-3 py-1 rounded-lg hover:bg-[#C85E18] transition-colors font-medium">Mark Done</button>
+                    <button onClick={() => completeTask(task.id)} className="text-xs bg-amber-500 text-white px-3 py-1 rounded-lg hover:bg-amber-600 transition-colors font-medium">Mark Done</button>
                     <button onClick={() => deleteRecurringTask(task.id)} className="text-muted-foreground hover:text-destructive">
                       <Trash2 className="w-3.5 h-3.5" />
                     </button>

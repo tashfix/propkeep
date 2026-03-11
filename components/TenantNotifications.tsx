@@ -245,7 +245,7 @@ function NotificationPanel({
                     <span className="text-xs font-semibold">{msg.tenantName}</span>
                     <span className="text-xs text-muted-foreground">· {unitNumber}</span>
                     {msg.imageUrl && (
-                      <span className="inline-flex items-center gap-0.5 text-[10px] text-[#6B5F55] bg-[#EDE8E2] px-1.5 py-0.5 rounded-full font-medium">
+                      <span className="inline-flex items-center gap-0.5 text-[10px] text-blue-600 bg-blue-50 px-1.5 py-0.5 rounded-full font-medium">
                         <Camera className="w-2.5 h-2.5" /> Photo
                       </span>
                     )}

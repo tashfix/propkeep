@@ -36,8 +36,8 @@ function StreetViewImage({ address, photoUrl }: { address: string; photoUrl: str
   }
 
   return (
-    <div className="h-40 bg-gradient-to-br from-[#EDE8E2] to-[#E0D8CE] flex items-center justify-center">
-      <Building2 className="w-12 h-12 text-[#C4A882]" />
+    <div className="h-40 bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center">
+      <Building2 className="w-12 h-12 text-slate-300" />
     </div>
   );
 }

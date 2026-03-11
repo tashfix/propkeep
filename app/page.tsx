@@ -5,7 +5,7 @@ export default function LandingPage() {
   return (
     <div className="min-h-screen bg-background">
       {/* Nav */}
-      <nav className="border-b border-border sticky top-0 bg-[rgba(250,248,244,0.92)] backdrop-blur-sm z-50">
+      <nav className="border-b border-border sticky top-0 bg-white/95 backdrop-blur-sm z-50">
         <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
@@ -33,7 +33,7 @@ export default function LandingPage() {
       {/* Hero */}
       <section className="pt-20 pb-24 px-6">
         <div className="max-w-4xl mx-auto text-center">
-          <div className="inline-flex items-center gap-2 bg-[#F2E4DA] text-primary text-sm font-medium px-4 py-1.5 rounded-full mb-8 border border-[#E8C9A0]">
+          <div className="inline-flex items-center gap-2 bg-blue-50 text-primary text-sm font-medium px-4 py-1.5 rounded-full mb-8 border border-blue-100">
             <CheckCircle className="w-4 h-4" />
             Built for independent landlords
           </div>
@@ -54,7 +54,7 @@ export default function LandingPage() {
             </Link>
             <Link
               href="/pricing"
-              className="inline-flex items-center justify-center bg-secondary text-foreground font-semibold px-8 py-3.5 rounded-xl hover:bg-muted transition-all text-base"
+              className="inline-flex items-center justify-center bg-gray-100 text-foreground font-semibold px-8 py-3.5 rounded-xl hover:bg-gray-200 transition-all text-base"
             >
               View pricing
             </Link>
@@ -66,7 +66,7 @@ export default function LandingPage() {
       </section>
 
       {/* Feature Cards */}
-      <section className="py-20 bg-secondary px-6">
+      <section className="py-20 bg-[#F8F9FA] px-6">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="font-heading text-3xl md:text-4xl font-bold text-foreground mb-4">
@@ -78,8 +78,8 @@ export default function LandingPage() {
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {features.map((feature) => (
-              <div key={feature.title} className="bg-card rounded-2xl p-6 border border-border hover:shadow-soft transition-shadow">
-                <div className="w-12 h-12 rounded-xl bg-[#F2E4DA] flex items-center justify-center mb-5">
+              <div key={feature.title} className="bg-white rounded-2xl p-6 border border-gray-100 hover:shadow-md transition-shadow">
+                <div className="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center mb-5">
                   <feature.icon className="w-6 h-6 text-primary" />
                 </div>
                 <h3 className="font-heading font-semibold text-lg text-foreground mb-2">{feature.title}</h3>
@@ -93,16 +93,16 @@ export default function LandingPage() {
       {/* CTA */}
       <section className="py-20 px-6">
         <div className="max-w-4xl mx-auto">
-          <div className="bg-gradient-to-br from-[#C4866A] to-[#8B5E3C] rounded-3xl p-10 text-center text-white">
+          <div className="bg-gradient-to-br from-primary to-blue-700 rounded-3xl p-10 text-center text-white">
             <h2 className="font-heading text-3xl font-bold mb-4">
               Stop letting maintenance chaos cost you money
             </h2>
-            <p className="text-[#F2E4DA] text-lg mb-8 max-w-xl mx-auto">
+            <p className="text-blue-100 text-lg mb-8 max-w-xl mx-auto">
               Every missed maintenance task is a bigger repair bill. Every lost receipt is money you can&apos;t deduct.
             </p>
             <Link
               href="/dashboard"
-              className="inline-flex items-center gap-2 bg-white text-[#8B5E3C] font-semibold px-8 py-3.5 rounded-xl hover:bg-[#F2E4DA] transition-all text-base"
+              className="inline-flex items-center gap-2 bg-white text-primary font-semibold px-8 py-3.5 rounded-xl hover:bg-blue-50 transition-all text-base"
             >
               Try the demo <ArrowRight className="w-5 h-5" />
             </Link>
