@@ -1,0 +1,239 @@
+"use client";
+import { useState, useRef, useEffect } from "react";
+import { useStore } from "@/lib/store";
+import { Building2, Wrench, Bell, Receipt, LogOut, CheckCircle2 } from "lucide-react";
+import PropertiesTab from "@/components/PropertiesTab";
+import TicketsTab from "@/components/TicketsTab";
+import ExpensesTab from "@/components/ExpensesTab";
+import RecurringTab from "@/components/RecurringTab";
+import TenantNotifications from "@/components/TenantNotifications";
+import Link from "next/link";
+
+type Tab = "overview" | "tickets" | "recurring" | "expenses";
+
+function getGreeting() {
+  const h = new Date().getHours();
+  const tod = h < 12 ? "Good morning" : h < 17 ? "Good afternoon" : "Good evening";
+  const puns = [
+    "Hope your Sunday isn't too draining! 🪠",
+    "New week — time to nail the to-do list! 🔨",
+    "Let's fix what matters today! 🔧",
+    "Mid-week already? No leaks in your schedule! 💧",
+    "Almost the weekend — don't let anything crack! 🪟",
+    "TGIF! Your properties are absolutely nailing it. 🏠",
+    "Weekend mode — unless a tenant calls… 😅",
+  ];
+  return { tod, pun: puns[new Date().getDay()] };
+}
+
+function ActionRow({ dot, onClick, children }: { dot: "red" | "amber" | "blue"; onClick?: () => void; children: React.ReactNode }) {
+  const colors = { red: "bg-[#C0604A]", amber: "bg-[#C4866A]", blue: "bg-[#7A9E8E]" };
+  return (
+    <div
+      onClick={onClick}
+      className={`flex items-center gap-2.5 text-sm py-1.5 px-1 rounded-lg ${onClick ? "cursor-pointer hover:bg-muted/50 transition-colors" : ""}`}
+    >
+      <span className={`w-2 h-2 rounded-full shrink-0 ${colors[dot]}`} />
+      <span className="flex-1">{children}</span>
+      {onClick && <span className="text-muted-foreground text-xs">→</span>}
+    </div>
+  );
+}
+
+export default function Dashboard() {
+  const { properties, tickets, recurringTasks, expenses, tenantMessages } = useStore();
+  const [activeTab, setActiveTab] = useState<Tab>("overview");
+  const [notifOpen, setNotifOpen] = useState(false);
+  const notifRef = useRef<HTMLDivElement>(null);
+
+  const now = new Date();
+  const openTickets = tickets.filter(t => t.status !== "resolved").length;
+  const overdueTasks = recurringTasks.filter(t => new Date(t.nextDueAt) < now).length;
+  const totalExpenses = expenses.reduce((sum, e) => sum + e.amount, 0);
+  const monthExpenses = expenses.filter(e => {
+    const d = new Date(e.date);
+    return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
+  }).reduce((sum, e) => sum + e.amount, 0);
+  const totalUnits = properties.reduce((s, p) => s + p.units.length, 0);
+  const highPriorityTickets = tickets.filter(t => t.status !== "resolved" && t.priority === "high");
+  const unreadMaintenance = tenantMessages.filter(m => !m.read && m.isMaintenanceRelated);
+  const notifCount = highPriorityTickets.length + (overdueTasks > 0 ? 1 : 0) + unreadMaintenance.length;
+
+  useEffect(() => {
+    function handleClick(e: MouseEvent) {
+      if (notifRef.current && !notifRef.current.contains(e.target as Node)) {
+        setNotifOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, []);
+
+  const tabs: { id: Tab; label: string; icon: React.ElementType }[] = [
+    { id: "overview", label: "Overview", icon: Building2 },
+    { id: "tickets", label: "Tickets", icon: Wrench },
+    { id: "recurring", label: "Recurring", icon: Bell },
+    { id: "expenses", label: "Expenses", icon: Receipt },
+  ];
+
+  return (
+    <div className="min-h-screen bg-background">
+      {/* Topbar */}
+      <header className="bg-[rgba(250,248,244,0.90)] backdrop-blur-[20px] border-b border-border sticky top-0 z-40">
+        <div className="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <div className="w-7 h-7 rounded-lg bg-primary flex items-center justify-center">
+              <Wrench className="w-3.5 h-3.5 text-white" />
+            </div>
+            <span className="font-heading font-bold text-lg">PropKeep</span>
+          </div>
+
+          <div className="flex items-center gap-4">
+            {/* Notification bell */}
+            <div ref={notifRef} className="relative">
+              <button
+                onClick={() => setNotifOpen(o => !o)}
+                className="relative p-1.5 text-muted-foreground hover:text-foreground transition-colors"
+              >
+                <Bell className="w-5 h-5" />
+                {notifCount > 0 && (
+                  <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-red-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center">
+                    {notifCount}
+                  </span>
+                )}
+              </button>
+
+              {/* Dropdown panel */}
+              {notifOpen && (
+                <div className="absolute right-0 top-full mt-2 w-80 bg-card rounded-[16px] border border-border shadow-raised z-50 overflow-hidden">
+                  <div className="px-4 py-3 border-b border-border">
+                    <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Notifications</p>
+                  </div>
+                  <div className="p-2 space-y-0.5 max-h-80 overflow-y-auto">
+                    {notifCount === 0 ? (
+                      <div className="flex items-center gap-2.5 py-3 px-1 text-sm text-[#3D7A68]">
+                        <CheckCircle2 className="w-4 h-4 text-[#3D7A68] shrink-0" />
+                        All caught up — no urgent items.
+                      </div>
+                    ) : (
+                      <>
+                        {highPriorityTickets.map(t => (
+                          <ActionRow key={t.id} dot="red" onClick={() => { setActiveTab("tickets"); setNotifOpen(false); }}>
+                            <span className="font-medium">{t.title}</span>
+                            <span className="text-muted-foreground"> · High priority</span>
+                          </ActionRow>
+                        ))}
+                        {overdueTasks > 0 && (
+                          <ActionRow dot="amber" onClick={() => { setActiveTab("recurring"); setNotifOpen(false); }}>
+                            {overdueTasks} recurring task{overdueTasks > 1 ? "s" : ""} overdue
+                          </ActionRow>
+                        )}
+                        {unreadMaintenance.map(m => (
+                          <ActionRow key={m.id} dot="blue">
+                            <span className="font-medium">{m.tenantName}:</span>
+                            <span className="text-muted-foreground"> &ldquo;{m.body.slice(0, 55)}&hellip;&rdquo;</span>
+                          </ActionRow>
+                        ))}
+                      </>
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <Link href="/" className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
+              <LogOut className="w-4 h-4" />
+              Exit
+            </Link>
+          </div>
+        </div>
+      </header>
+
+      <main className="max-w-6xl mx-auto px-6 py-8">
+        {/* Greeting */}
+        {(() => {
+          const { tod, pun } = getGreeting();
+          return (
+            <div className="mb-6">
+              <h1 className="text-2xl font-heading font-bold">{tod}, Tash! 👋</h1>
+              <p className="text-sm text-muted-foreground mt-0.5">{pun}</p>
+              <p className="text-sm text-muted-foreground mt-0.5">
+                {now.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric", year: "numeric" })}
+                {properties.length > 0 && ` · ${properties.length} ${properties.length === 1 ? "property" : "properties"}, ${totalUnits} ${totalUnits === 1 ? "unit" : "units"}`}
+              </p>
+            </div>
+          );
+        })()}
+
+        {/* Stats row */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+          {[
+            { label: "Properties", value: properties.length, sub: `${properties.reduce((s, p) => s + p.units.length, 0)} units`, color: "text-primary", bg: "bg-[#F2E4DA]", icon: Building2 },
+            { label: "Open Tickets", value: openTickets, sub: `${tickets.filter(t => t.status === "in-progress").length} in progress`, color: openTickets > 0 ? "text-[#A34030]" : "text-[#3D7A68]", bg: "bg-[#F5DDD8]", icon: Wrench },
+            { label: "Overdue Tasks", value: overdueTasks, sub: `${recurringTasks.length} total tasks`, color: overdueTasks > 0 ? "text-[#A06B20]" : "text-[#3D7A68]", bg: "bg-[#F5EDDB]", icon: Bell },
+            { label: "This Month", value: `$${monthExpenses.toLocaleString()}`, sub: `$${totalExpenses.toLocaleString()} all time`, color: "text-foreground", bg: "bg-muted", icon: Receipt },
+          ].map(stat => (
+            <div key={stat.label} className="bg-card rounded-[16px] p-4 border border-border shadow-whisper">
+              <div className="flex items-center justify-between mb-2">
+                <p className="text-xs text-muted-foreground font-medium">{stat.label}</p>
+                <div className={`w-8 h-8 rounded-lg ${stat.bg} flex items-center justify-center`}>
+                  <stat.icon className={`w-4 h-4 ${stat.color}`} />
+                </div>
+              </div>
+              <p className={`text-2xl font-heading font-bold ${stat.color}`}>{stat.value}</p>
+              <p className="text-xs text-muted-foreground mt-0.5">{stat.sub}</p>
+            </div>
+          ))}
+        </div>
+
+        {/* Onboarding empty state */}
+        {properties.length === 0 && (
+          <div className="bg-card rounded-2xl border-2 border-dashed border-[#E8C9A0] p-12 text-center mb-8">
+            <div className="w-16 h-16 bg-[#F2E4DA] rounded-2xl flex items-center justify-center mx-auto mb-4">
+              <Building2 className="w-8 h-8 text-primary" />
+            </div>
+            <h2 className="font-heading text-xl font-bold mb-2">Add your first property to get started</h2>
+            <p className="text-muted-foreground text-sm mb-6 max-w-xs mx-auto">
+              Once you add a property, you can track tickets, log expenses, and set recurring maintenance reminders.
+            </p>
+            <button
+              onClick={() => setActiveTab("overview")}
+              className="bg-primary text-white text-sm font-medium px-5 py-2.5 rounded-lg hover:bg-primary/90 transition-colors"
+            >
+              Add a property
+            </button>
+          </div>
+        )}
+
+        {/* Tab navigation */}
+        <div className="flex gap-1 bg-muted rounded-[14px] p-1 mb-6 w-fit">
+          {tabs.map(tab => (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id)}
+              className={`flex items-center gap-2 px-4 py-2 rounded-[10px] text-sm font-medium transition-all ${
+                activeTab === tab.id
+                  ? "bg-card text-foreground shadow-whisper font-semibold"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              <tab.icon className="w-4 h-4" />
+              {tab.label}
+            </button>
+          ))}
+        </div>
+
+        {/* Tab content */}
+        <div className="bg-card rounded-[16px] border border-border p-6 shadow-whisper">
+          {activeTab === "overview" && <PropertiesTab />}
+          {activeTab === "tickets" && <TicketsTab />}
+          {activeTab === "recurring" && <RecurringTab />}
+          {activeTab === "expenses" && <ExpensesTab />}
+        </div>
+      </main>
+
+      {/* Floating tenant notification launcher — rendered outside <main> so it overlays everything */}
+      <TenantNotifications />
+    </div>
+  );
+}
