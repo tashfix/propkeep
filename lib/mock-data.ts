@@ -168,10 +168,10 @@ export const defaultData = {
   properties: [
     {
       id: "p1",
-      name: "South Congress Duplex",
-      address: "2406 S Congress Ave, Austin, TX 78704",
+      name: "Speedway Duplex",
+      address: "3814 Speedway, Austin, TX 78751",
       type: "multi-unit" as const,
-      photoUrl: "https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=640&h=320&fit=crop",
+      photoUrl: "/streetview/p1.jpg",
       units: [
         { id: "u1", propertyId: "p1", unitNumber: "Unit A", tenantName: "Sarah Johnson", tenantEmail: "sarah@email.com", rentAmount: 1400 },
         { id: "u2", propertyId: "p1", unitNumber: "Unit B", tenantName: "Marcus Lee", tenantEmail: "marcus@email.com", rentAmount: 1350 },
@@ -179,10 +179,10 @@ export const defaultData = {
     },
     {
       id: "p2",
-      name: "East 6th St Rental",
-      address: "1810 E 6th St, Austin, TX 78702",
+      name: "Sunshine Dr Rental",
+      address: "5204 Sunshine Dr, Austin, TX 78756",
       type: "single-family" as const,
-      photoUrl: "https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=640&h=320&fit=crop",
+      photoUrl: "/streetview/p2.jpg",
       units: [
         { id: "u3", propertyId: "p2", unitNumber: "Main", tenantName: "Emily Chen", tenantEmail: "emily@email.com", rentAmount: 2100 },
       ],

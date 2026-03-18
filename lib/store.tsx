@@ -36,7 +36,7 @@ type Store = {
   attachRecurringBooking: (taskId: string, providerId: string, platform: ServiceProvider["platform"]) => void;
 };
 
-const DATA_VERSION = "v3";
+const DATA_VERSION = "v4";
 
 const StoreContext = createContext<Store | null>(null);
 

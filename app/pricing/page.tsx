@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { CheckCircle, Wrench, ArrowLeft } from "lucide-react";
+import { LogoIcon } from "@/components/ui/logo-icon";
 
 const FREE_FEATURES = ["1 property", "10 maintenance tickets", "5 recurring tasks", "Expense tracking", "Mobile friendly"];
 const PLUS_FEATURES = ["Unlimited properties", "Unlimited tickets", "Unlimited recurring tasks", "Full expense history", "Priority support", "Export to CSV (coming soon)"];
@@ -14,9 +15,7 @@ export default function PricingPage() {
 
         <div className="text-center mb-14">
           <div className="inline-flex items-center gap-2 mb-3">
-            <div className="w-7 h-7 rounded-lg bg-primary flex items-center justify-center">
-              <Wrench className="w-3.5 h-3.5 text-white" />
-            </div>
+            <LogoIcon className="w-7 h-7" />
             <span className="font-heading font-bold text-lg">PropKeep</span>
           </div>
           <h1 className="font-heading text-4xl font-bold text-foreground mb-3">Simple, honest pricing</h1>

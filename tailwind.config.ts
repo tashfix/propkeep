@@ -54,9 +54,17 @@ const config: Config = {
         },
       },
       borderRadius: {
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
+        lg:    "var(--radius)",
+        md:    "calc(var(--radius) - 4px)",
+        sm:    "calc(var(--radius) - 8px)",
+        xl:    "calc(var(--radius) + 4px)",
+        "2xl": "calc(var(--radius) + 8px)",
+      },
+      boxShadow: {
+        whisper: "0 1px 3px rgba(28,75,140,0.06), 0 1px 2px rgba(28,75,140,0.04)",
+        soft:    "0 4px 12px rgba(28,75,140,0.10), 0 2px 4px rgba(28,75,140,0.06)",
+        raised:  "0 8px 24px rgba(28,75,140,0.12), 0 4px 8px rgba(28,75,140,0.08)",
+        float:   "0 16px 40px rgba(28,75,140,0.14), 0 8px 16px rgba(28,75,140,0.10)",
       },
       keyframes: {
         "accordion-down": {

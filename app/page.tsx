@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Wrench, Building2, Receipt, Bell, CheckCircle, ArrowRight } from "lucide-react";
+import { LogoIcon } from "@/components/ui/logo-icon";
 
 export default function LandingPage() {
   return (
@@ -8,9 +9,7 @@ export default function LandingPage() {
       <nav className="border-b border-border sticky top-0 bg-white/95 backdrop-blur-sm z-50">
         <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
-              <Wrench className="w-4 h-4 text-white" />
-            </div>
+            <LogoIcon className="w-8 h-8" />
             <span className="font-heading font-bold text-xl text-foreground">PropKeep</span>
           </div>
           <div className="flex items-center gap-4">
@@ -114,9 +113,7 @@ export default function LandingPage() {
       <footer className="border-t border-border py-8 px-6">
         <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2">
-            <div className="w-6 h-6 rounded-md bg-primary flex items-center justify-center">
-              <Wrench className="w-3 h-3 text-white" />
-            </div>
+            <LogoIcon className="w-6 h-6" />
             <span className="font-heading font-bold text-foreground">PropKeep</span>
           </div>
           <p className="text-sm text-muted-foreground">© {new Date().getFullYear()} PropKeep. Built for landlords.</p>

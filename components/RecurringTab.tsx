@@ -2,7 +2,7 @@
 import { useState, useRef } from "react";
 import { useStore } from "@/lib/store";
 import { RecurringTask, matchProvider, mockProviders, ServiceProvider } from "@/lib/mock-data";
-import { Bell, Plus, Trash2, CheckCircle, AlertTriangle, Sparkles, Star, CheckCircle2, ExternalLink, CalendarCheck } from "lucide-react";
+import { Bell, Plus, Trash2, Check, CheckCircle, AlertTriangle, Sparkles, Star, CheckCircle2, ExternalLink, CalendarCheck, Droplets, Zap, Wind, Hammer, Package, Wrench, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -18,6 +18,15 @@ const platformStyles: Record<ServiceProvider["platform"], string> = {
   TaskRabbit: "bg-[#0D9B4E]/10 text-[#0D9B4E]",
   Thumbtack: "bg-blue-50 text-blue-700",
   Angi: "bg-orange-50 text-orange-700",
+};
+
+const categoryConfig: Record<RecurringTask["category"], React.ElementType> = {
+  plumbing:   Droplets,
+  electrical: Zap,
+  hvac:       Wind,
+  appliance:  Package,
+  structural: Hammer,
+  other:      Wrench,
 };
 
 // ─── Preferred-time helpers ───────────────────────────────────────────────────
@@ -91,7 +100,7 @@ function RecurringServiceDialog({
   return (
     <Dialog open={open} onOpenChange={handleOpen}>
       <DialogTrigger asChild>
-        <button className="text-xs text-indigo-600 hover:text-indigo-800 hover:underline flex items-center gap-1 transition-colors">
+        <button className="flex items-center gap-1 text-xs px-2.5 py-1 rounded-md bg-violet-50 text-violet-700 border border-violet-200 hover:bg-violet-100 transition-colors font-medium">
           {isManageMode ? (
             <><CalendarCheck className="w-3 h-3" />Manage Service Call</>
           ) : (
@@ -373,6 +382,7 @@ function AddTaskDialog() {
 
 export default function RecurringTab() {
   const { recurringTasks, properties, completeTask, deleteRecurringTask } = useStore();
+  const [deletingId, setDeletingId] = useState<string | null>(null);
 
   const now = new Date();
   const overdue = recurringTasks.filter(t => new Date(t.nextDueAt) < now);
@@ -396,10 +406,10 @@ export default function RecurringTab() {
       </div>
 
       {overdue.length > 0 && (
-        <div className="bg-amber-50 border border-amber-200 rounded-xl p-4">
+        <div className="bg-blue-50 border border-blue-100 rounded-3xl p-4">
           <div className="flex items-center gap-2 mb-3">
-            <AlertTriangle className="w-5 h-5 text-amber-600" />
-            <p className="font-semibold text-amber-800">{overdue.length} overdue task{overdue.length > 1 ? "s" : ""}</p>
+            <AlertTriangle className="w-5 h-5 text-blue-400" />
+            <p className="font-semibold text-blue-700">{overdue.length} overdue task{overdue.length > 1 ? "s" : ""}</p>
           </div>
           <div className="space-y-2">
             {overdue.map(task => {
@@ -407,13 +417,13 @@ export default function RecurringTab() {
               return (
                 <div key={task.id} className="flex items-center justify-between bg-white/70 rounded-lg px-3 py-2.5">
                   <div>
-                    <p className="text-sm font-medium text-amber-900">{task.title}</p>
-                    <p className="text-xs text-amber-700">{property?.name ?? "Unknown"} · {daysAgo(task.nextDueAt)}d overdue</p>
+                    <p className="text-sm font-medium text-foreground">{task.title}</p>
+                    <p className="text-xs text-muted-foreground">{property?.name ?? "Unknown"} · {daysAgo(task.nextDueAt)}d overdue</p>
                     <BookingStrip task={task} />
                   </div>
                   <div className="flex items-center gap-2 shrink-0 ml-3">
                     <RecurringServiceDialog task={task} propertyAddress={property?.address ?? ""} />
-                    <button onClick={() => completeTask(task.id)} className="text-xs bg-amber-500 text-white px-3 py-1 rounded-lg hover:bg-amber-600 transition-colors font-medium">Mark Done</button>
+                    <button onClick={() => completeTask(task.id)} className="text-xs bg-primary text-white px-3 py-1 rounded-lg hover:bg-primary/90 transition-colors font-medium">Mark Done</button>
                     <button onClick={() => deleteRecurringTask(task.id)} className="text-muted-foreground hover:text-destructive">
                       <Trash2 className="w-3.5 h-3.5" />
                     </button>
@@ -441,35 +451,66 @@ export default function RecurringTab() {
             const isSoon = days <= 14;
             const property = getProperty(task.propertyId);
             return (
-              <Card key={task.id} className="hover:shadow-md transition-shadow">
+              <Card key={task.id} className="hover:shadow-md hover:bg-blue-50/40 transition-all">
                 <CardContent className="p-4">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3 flex-1 min-w-0">
-                      <div className={`w-9 h-9 rounded-full flex items-center justify-center shrink-0 ${isSoon ? "bg-amber-100" : "bg-green-100"}`}>
-                        <Bell className={`w-4 h-4 ${isSoon ? "text-amber-600" : "text-green-600"}`} />
+                  <div className="flex items-start gap-4">
+                    {(() => { const CategoryIcon = categoryConfig[task.category]; return (
+                      <div className="mt-0.5 w-8 h-8 rounded-full flex items-center justify-center shrink-0 bg-muted">
+                        <CategoryIcon className="w-4 h-4 text-muted-foreground" />
                       </div>
-                      <div className="min-w-0">
-                        <p className="text-sm font-medium">{task.title}</p>
-                        <p className="text-xs text-muted-foreground">{property?.name ?? "Unknown"} · every {task.intervalDays} days</p>
-                        <BookingStrip task={task} />
+                    ); })()}
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-start justify-between gap-2">
+                        <div className="min-w-0">
+                          <p className="text-sm font-medium">{task.title}</p>
+                          <p className="text-xs text-muted-foreground">{property?.name ?? "Unknown"} · every {task.intervalDays} days</p>
+                          <BookingStrip task={task} />
+                        </div>
+                        <div className="flex items-center gap-2 shrink-0">
+                          <Badge variant={isSoon ? "warning" : "success"}>
+                            {days === 0 ? "Due today" : `${days}d`}
+                          </Badge>
+                          <div className="flex items-center gap-2">
+                            <RecurringServiceDialog task={task} propertyAddress={property?.address ?? ""} />
+                            <button
+                              onClick={() => completeTask(task.id)}
+                              className="p-1 rounded-md text-muted-foreground hover:text-green-600 hover:bg-green-50 transition-colors"
+                              title="Mark complete"
+                            >
+                              <CheckCircle className="w-3.5 h-3.5" />
+                            </button>
+                            {deletingId === task.id ? (
+                              <span className="flex items-center gap-1">
+                                <span className="text-xs text-muted-foreground">Delete?</span>
+                                <button
+                                  onClick={() => { deleteRecurringTask(task.id); setDeletingId(null); }}
+                                  className="p-1 rounded-md text-destructive hover:bg-red-50 transition-colors"
+                                >
+                                  <Check className="w-3.5 h-3.5" />
+                                </button>
+                                <button
+                                  onClick={() => setDeletingId(null)}
+                                  className="p-1 rounded-md text-muted-foreground hover:bg-muted transition-colors"
+                                >
+                                  <X className="w-3.5 h-3.5" />
+                                </button>
+                              </span>
+                            ) : (
+                              <button
+                                onClick={() => setDeletingId(task.id)}
+                                className="p-1 rounded-md text-muted-foreground hover:text-destructive hover:bg-red-50 transition-colors"
+                              >
+                                <Trash2 className="w-3.5 h-3.5" />
+                              </button>
+                            )}
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                    <div className="flex items-center gap-3 shrink-0 ml-3">
-                      <RecurringServiceDialog task={task} propertyAddress={property?.address ?? ""} />
-                      <Badge variant={isSoon ? "warning" : "success"}>
-                        {days === 0 ? "Due today" : `${days}d`}
-                      </Badge>
-                      <button onClick={() => completeTask(task.id)} className="text-muted-foreground hover:text-green-600 transition-colors" title="Mark complete">
-                        <CheckCircle className="w-4 h-4" />
-                      </button>
-                      <button onClick={() => deleteRecurringTask(task.id)} className="text-muted-foreground hover:text-destructive transition-colors">
-                        <Trash2 className="w-4 h-4" />
-                      </button>
+                      {task.lastCompletedAt && (
+                        <p className="text-xs text-muted-foreground mt-1.5">Last completed {new Date(task.lastCompletedAt).toLocaleDateString("en-US", { month: "short", day: "numeric" })}</p>
+                      )}
                     </div>
                   </div>
-                  {task.lastCompletedAt && (
-                    <p className="text-xs text-muted-foreground mt-2 ml-12">Last completed {new Date(task.lastCompletedAt).toLocaleDateString("en-US", { month: "short", day: "numeric" })}</p>
-                  )}
                 </CardContent>
               </Card>
             );

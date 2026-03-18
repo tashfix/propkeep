@@ -1,36 +1,49 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useStore } from "@/lib/store";
 import { Property, Appliance } from "@/lib/mock-data";
-import { Building2, Plus, Trash2, Home, Users, ChevronDown, ChevronRight, Package } from "lucide-react";
+import { Building2, Plus, Trash2, Home, Users, ChevronDown, ChevronRight, Package, MapPin } from "lucide-react";
 
 function StreetViewImage({ address, photoUrl }: { address: string; photoUrl: string | null }) {
+  const [loading, setLoading] = useState(true);
   const [imgError, setImgError] = useState(false);
   const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
 
-  if (photoUrl && !imgError) {
+  useEffect(() => {
+    const t = setTimeout(() => setLoading(false), 1400);
+    return () => clearTimeout(t);
+  }, []);
+
+  const src = apiKey
+    ? `https://maps.googleapis.com/maps/api/streetview?size=900x600&location=${encodeURIComponent(address)}&key=${apiKey}&fov=80&pitch=5`
+    : photoUrl ?? null;
+
+  if (loading) {
     return (
-      <div className="h-40 w-full overflow-hidden">
-        <img
-          src={photoUrl}
-          alt={`Photo of ${address}`}
-          className="w-full h-full object-cover"
-          onError={() => setImgError(true)}
-        />
+      <div className="h-40 w-full bg-slate-100 animate-pulse flex flex-col items-center justify-center gap-1.5">
+        <MapPin className="w-5 h-5 text-slate-400" />
+        <span className="text-xs text-slate-400 tracking-wide">Fetching street view…</span>
       </div>
     );
   }
 
-  if (!imgError && apiKey) {
-    const url = `https://maps.googleapis.com/maps/api/streetview?size=640x320&location=${encodeURIComponent(address)}&key=${apiKey}&fov=80&pitch=5`;
+  if (src && !imgError) {
     return (
-      <div className="h-40 w-full overflow-hidden">
+      <div className="h-40 w-full overflow-hidden relative">
         <img
-          src={url}
+          src={src}
           alt={`Street view of ${address}`}
           className="w-full h-full object-cover"
           onError={() => setImgError(true)}
         />
+        {/* Google Maps watermark */}
+        <div className="absolute bottom-1.5 right-1.5 flex items-center gap-1 bg-white/85 backdrop-blur-sm rounded px-1.5 py-0.5 shadow-sm">
+          <svg width="9" height="9" viewBox="0 0 24 24" fill="none">
+            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" fill="#EA4335"/>
+            <circle cx="12" cy="9" r="2.5" fill="white"/>
+          </svg>
+          <span className="text-[9px] text-gray-500 font-medium leading-none">Google Maps</span>
+        </div>
       </div>
     );
   }

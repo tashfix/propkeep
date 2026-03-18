@@ -2,7 +2,7 @@
 import { useState, useRef } from "react";
 import { useStore } from "@/lib/store";
 import { Ticket, Appliance, Property, Unit, matchProvider, mockProviders, ServiceProvider } from "@/lib/mock-data";
-import { Wrench, Plus, Trash2, CheckCircle, Clock, AlertCircle, Package, X, ImageIcon, Sparkles, Star, CheckCircle2, ExternalLink, CalendarCheck } from "lucide-react";
+import { Wrench, Plus, Trash2, Check, CheckCircle, Clock, AlertCircle, Package, X, ImageIcon, Sparkles, Star, CheckCircle2, ExternalLink, CalendarCheck, Droplets, Zap, Wind, Hammer } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -106,9 +106,9 @@ function ServiceSuggestionDialog({
   return (
     <Dialog open={open} onOpenChange={handleOpen}>
       <DialogTrigger asChild>
-        <button className="text-xs text-indigo-600 hover:text-indigo-800 hover:underline flex items-center gap-1 transition-colors">
+        <button className="flex items-center gap-1 text-xs px-2.5 py-1 rounded-md bg-violet-50 text-violet-700 border border-violet-200 hover:bg-violet-100 transition-colors font-medium">
           {isManageMode ? (
-            <><CalendarCheck className="w-3 h-3" />Manage Service Call</>
+            <><CalendarCheck className="w-3 h-3" />Manage</>
           ) : (
             <><Sparkles className="w-3 h-3" />Book a Pro</>
           )}
@@ -422,7 +422,7 @@ function AddTicketDialog() {
 // ─── Status / priority configs ─────────────────────────────────────────────────
 
 const statusConfig = {
-  open: { label: "Open", variant: "destructive" as const, icon: AlertCircle },
+  open: { label: "Open", variant: "subtle" as const, icon: AlertCircle },
   "in-progress": { label: "In Progress", variant: "warning" as const, icon: Clock },
   resolved: { label: "Resolved", variant: "success" as const, icon: CheckCircle },
 };
@@ -433,12 +433,38 @@ const priorityConfig = {
   high: { label: "High", color: "text-red-600 bg-red-50" },
 };
 
+const TIME_WORDS = ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven"];
+
+function relativeTime(dateStr: string): string {
+  const diffMs = Date.now() - new Date(dateStr).getTime();
+  const days = Math.floor(diffMs / 86_400_000);
+  if (days === 0) return new Date(dateStr).toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" });
+  if (days < 7)  { const w = TIME_WORDS[days - 1] ?? days;  return `${w} day${days === 1 ? "" : "s"} ago`; }
+  const weeks = Math.floor(days / 7);
+  if (weeks < 5) { const w = TIME_WORDS[weeks - 1] ?? weeks; return `${w} week${weeks === 1 ? "" : "s"} ago`; }
+  const months = Math.floor(days / 30);
+  if (months < 12) { const w = TIME_WORDS[months - 1] ?? months; return `${w} month${months === 1 ? "" : "s"} ago`; }
+  const years = Math.floor(days / 365);
+  const w = TIME_WORDS[years - 1] ?? years;
+  return `${w} year${years === 1 ? "" : "s"} ago`;
+}
+
+const categoryConfig: Record<Ticket["category"], React.ElementType> = {
+  plumbing:   Droplets,
+  electrical: Zap,
+  hvac:       Wind,
+  appliance:  Package,
+  structural: Hammer,
+  other:      Wrench,
+};
+
 // ─── Main tab ──────────────────────────────────────────────────────────────────
 
 export default function TicketsTab() {
   const { tickets, properties, appliances, updateTicketStatus, deleteTicket } = useStore();
   const [filter, setFilter] = useState<Ticket["status"] | "all">("all");
   const [lightboxSrc, setLightboxSrc] = useState<string | null>(null);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
 
   const filtered = filter === "all" ? tickets : tickets.filter(t => t.status === filter);
   const getProperty = (id: string) => properties.find(p => p.id === id);
@@ -481,22 +507,22 @@ export default function TicketsTab() {
           const property = getProperty(ticket.propertyId);
           const status = statusConfig[ticket.status];
           const priority = priorityConfig[ticket.priority];
-          const StatusIcon = status.icon;
+          const CategoryIcon = categoryConfig[ticket.category];
           const linkedAppliance = ticket.applianceId ? appliances.find(a => a.id === ticket.applianceId) ?? null : null;
           const linkedUnit = property?.units.find(u => u.id === ticket.unitId) ?? null;
 
           return (
-            <Card key={ticket.id} className="hover:shadow-md transition-shadow">
+            <Card key={ticket.id} className="hover:shadow-md hover:bg-blue-50/40 transition-all group">
               <CardContent className="p-4">
                 <div className="flex items-start gap-4">
-                  <div className={`mt-0.5 w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${ticket.status === "resolved" ? "bg-green-100" : ticket.status === "in-progress" ? "bg-amber-100" : "bg-red-100"}`}>
-                    <StatusIcon className={`w-4 h-4 ${ticket.status === "resolved" ? "text-green-600" : ticket.status === "in-progress" ? "text-amber-600" : "text-red-600"}`} />
+                  <div className="mt-0.5 w-8 h-8 rounded-full flex items-center justify-center shrink-0 bg-muted">
+                    <CategoryIcon className="w-4 h-4 text-muted-foreground" />
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-start justify-between gap-2">
                       <div>
                         <p className="font-medium text-sm">{ticket.title}</p>
-                        <p className="text-xs text-muted-foreground mt-0.5">{property?.name} {ticket.unitId && `· ${property?.units.find(u => u.id === ticket.unitId)?.unitNumber}`}</p>
+                        <p className="text-xs text-muted-foreground mt-0.5">{property?.name} {ticket.unitId && `· ${property?.units.find(u => u.id === ticket.unitId)?.unitNumber}`}<span className="mx-1.5 opacity-30">|</span>{relativeTime(ticket.createdAt)}</p>
                       </div>
                       <div className="flex items-center gap-2 shrink-0">
                         <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${priority.color}`}>{priority.label}</span>
@@ -547,7 +573,7 @@ export default function TicketsTab() {
                         </button>
                       )}
                       {ticket.cost && <span className="text-xs font-medium text-primary">${ticket.cost.toLocaleString()}</span>}
-                      <div className="ml-auto flex items-center gap-3">
+                      <div className="ml-auto flex items-center gap-2 opacity-0 group-hover:opacity-100 focus-within:opacity-100 pointer-events-none group-hover:pointer-events-auto focus-within:pointer-events-auto transition-opacity duration-150">
                         {/* Book a Pro — shown for non-resolved tickets */}
                         {ticket.status !== "resolved" && (
                           <ServiceSuggestionDialog
@@ -558,14 +584,35 @@ export default function TicketsTab() {
                           />
                         )}
                         {ticket.status === "open" && (
-                          <button onClick={() => updateTicketStatus(ticket.id, "in-progress")} className="text-xs text-amber-600 hover:underline">Start</button>
+                          <button onClick={() => updateTicketStatus(ticket.id, "in-progress")} className="text-xs text-muted-foreground hover:text-foreground hover:bg-muted/70 px-2 py-0.5 rounded-md transition-colors">Start</button>
                         )}
                         {ticket.status === "in-progress" && (
-                          <button onClick={() => updateTicketStatus(ticket.id, "resolved")} className="text-xs text-green-600 hover:underline">Resolve</button>
+                          <button onClick={() => updateTicketStatus(ticket.id, "resolved")} className="text-xs text-muted-foreground hover:text-foreground hover:bg-muted/70 px-2 py-0.5 rounded-md transition-colors">Resolve</button>
                         )}
-                        <button onClick={() => deleteTicket(ticket.id)} className="text-muted-foreground hover:text-destructive transition-colors">
-                          <Trash2 className="w-3.5 h-3.5" />
-                        </button>
+                        {deletingId === ticket.id ? (
+                          <span className="flex items-center gap-1">
+                            <span className="text-xs text-muted-foreground">Delete?</span>
+                            <button
+                              onClick={() => { deleteTicket(ticket.id); setDeletingId(null); }}
+                              className="p-1 rounded-md text-destructive hover:bg-red-50 transition-colors"
+                            >
+                              <Check className="w-3.5 h-3.5" />
+                            </button>
+                            <button
+                              onClick={() => setDeletingId(null)}
+                              className="p-1 rounded-md text-muted-foreground hover:bg-muted transition-colors"
+                            >
+                              <X className="w-3.5 h-3.5" />
+                            </button>
+                          </span>
+                        ) : (
+                          <button
+                            onClick={() => setDeletingId(ticket.id)}
+                            className="p-1 rounded-md text-muted-foreground hover:text-destructive hover:bg-red-50 transition-colors"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </button>
+                        )}
                       </div>
                     </div>
                   </div>

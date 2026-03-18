@@ -1,7 +1,8 @@
 "use client";
 import { useState, useRef, useEffect } from "react";
 import { useStore } from "@/lib/store";
-import { Building2, Wrench, Bell, Receipt, LogOut, CheckCircle2 } from "lucide-react";
+import { Building2, Wrench, Bell, Receipt, LogOut, CheckCircle2, Users } from "lucide-react";
+import { LogoIcon } from "@/components/ui/logo-icon";
 import PropertiesTab from "@/components/PropertiesTab";
 import TicketsTab from "@/components/TicketsTab";
 import ExpensesTab from "@/components/ExpensesTab";
@@ -55,6 +56,7 @@ export default function Dashboard() {
     return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
   }).reduce((sum, e) => sum + e.amount, 0);
   const totalUnits = properties.reduce((s, p) => s + p.units.length, 0);
+  const totalTenants = properties.reduce((s, p) => s + p.units.filter(u => u.tenantName).length, 0);
   const highPriorityTickets = tickets.filter(t => t.status !== "resolved" && t.priority === "high");
   const unreadMaintenance = tenantMessages.filter(m => !m.read && m.isMaintenanceRelated);
   const notifCount = highPriorityTickets.length + (overdueTasks > 0 ? 1 : 0) + unreadMaintenance.length;
@@ -77,14 +79,16 @@ export default function Dashboard() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#F8F9FA]">
+    <div className="min-h-screen relative">
+      {/* Wave background */}
+      <div aria-hidden className="pointer-events-none fixed inset-0 -z-10">
+        <img src="/wave-bg.svg" alt="" className="w-full h-full object-cover object-center" />
+      </div>
       {/* Topbar */}
-      <header className="bg-white border-b border-gray-100 sticky top-0 z-40">
+      <header className="bg-white/80 backdrop-blur-md border-b border-white/40 sticky top-0 z-40">
         <div className="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-lg bg-primary flex items-center justify-center">
-              <Wrench className="w-3.5 h-3.5 text-white" />
-            </div>
+            <LogoIcon className="w-7 h-7" />
             <span className="font-heading font-bold text-lg">PropKeep</span>
           </div>
 
@@ -105,7 +109,7 @@ export default function Dashboard() {
 
               {/* Dropdown panel */}
               {notifOpen && (
-                <div className="absolute right-0 top-full mt-2 w-80 bg-white rounded-xl border border-gray-100 shadow-lg z-50 overflow-hidden">
+                <div className="absolute right-0 top-full mt-2 w-80 bg-white rounded-2xl border border-gray-100 shadow-lg z-50 overflow-hidden">
                   <div className="px-4 py-3 border-b border-border">
                     <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Notifications</p>
                   </div>
@@ -149,13 +153,15 @@ export default function Dashboard() {
         </div>
       </header>
 
-      <main className="max-w-6xl mx-auto px-6 py-8">
+      <main className="max-w-6xl mx-auto px-6 py-8 pb-32">
         {/* Greeting */}
         {(() => {
           const { tod, pun } = getGreeting();
           return (
             <div className="mb-6">
-              <h1 className="text-2xl font-heading font-bold">{tod}, Tash! 👋</h1>
+              <h1 className="text-3xl font-heading font-bold">
+                <span className="bg-gradient-to-r from-[hsl(220,62%,32%)] to-[hsl(195,56%,44%)] bg-clip-text text-transparent">{tod}, Tash!</span>
+              </h1>
               <p className="text-sm text-muted-foreground mt-0.5">{pun}</p>
               <p className="text-sm text-muted-foreground mt-0.5">
                 {now.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric", year: "numeric" })}
@@ -168,20 +174,24 @@ export default function Dashboard() {
         {/* Stats row */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
           {[
-            { label: "Properties", value: properties.length, sub: `${properties.reduce((s, p) => s + p.units.length, 0)} units`, color: "text-primary", bg: "bg-blue-50", icon: Building2 },
-            { label: "Open Tickets", value: openTickets, sub: `${tickets.filter(t => t.status === "in-progress").length} in progress`, color: openTickets > 0 ? "text-red-600" : "text-green-600", bg: "bg-red-50", icon: Wrench },
-            { label: "Overdue Tasks", value: overdueTasks, sub: `${recurringTasks.length} total tasks`, color: overdueTasks > 0 ? "text-amber-600" : "text-green-600", bg: "bg-amber-50", icon: Bell },
-            { label: "This Month", value: `$${monthExpenses.toLocaleString()}`, sub: `$${totalExpenses.toLocaleString()} all time`, color: "text-foreground", bg: "bg-gray-50", icon: Receipt },
+            { label: "Tenants",       value: totalTenants,                        sub: `${totalUnits} total units`,                                                       icon: Users,     gradient: true,  gradientFrom: "hsl(185,54%,28%)", gradientTo: "hsl(197,52%,40%)", iconBg: "bg-white/20", iconColor: "text-white",   valueColor: "text-white" },
+            { label: "Open Tickets",  value: openTickets,                         sub: `${tickets.filter(t => t.status === "in-progress").length} in progress`,           icon: Wrench,    gradient: true,  gradientFrom: "hsl(215,58%,28%)", gradientTo: "hsl(222,52%,40%)", iconBg: "bg-white/20", iconColor: "text-white",   valueColor: "text-white" },
+            { label: "Overdue Tasks", value: overdueTasks,                        sub: `${recurringTasks.length} total tasks`,                                             icon: Bell,      gradient: true,  gradientFrom: "hsl(197,52%,32%)", gradientTo: "hsl(210,52%,44%)", iconBg: "bg-white/20", iconColor: "text-white",   valueColor: "text-white" },
+            { label: "This Month",    value: `$${monthExpenses.toLocaleString()}`, sub: `$${totalExpenses.toLocaleString()} all time`,                                    icon: Receipt,   gradient: true,  gradientFrom: "hsl(232,44%,32%)", gradientTo: "hsl(243,40%,46%)", iconBg: "bg-white/20", iconColor: "text-white",   valueColor: "text-white" },
           ].map(stat => (
-            <div key={stat.label} className="bg-white rounded-xl p-4 border border-gray-100 shadow-sm">
-              <div className="flex items-center justify-between mb-2">
-                <p className="text-xs text-muted-foreground font-medium">{stat.label}</p>
-                <div className={`w-8 h-8 rounded-lg ${stat.bg} flex items-center justify-center`}>
-                  <stat.icon className={`w-4 h-4 ${stat.color}`} />
+            <div
+              key={stat.label}
+              className={`rounded-3xl p-4 shadow-soft relative overflow-hidden ${stat.gradient ? "" : "bg-white border border-[hsl(var(--border))]"}`}
+              style={stat.gradient ? { background: `radial-gradient(ellipse at 78% 18%, rgba(255,255,255,0.22) 0%, transparent 52%), radial-gradient(ellipse at 12% 80%, rgba(255,255,255,0.13) 0%, transparent 44%), radial-gradient(ellipse at 55% 55%, rgba(255,255,255,0.07) 0%, transparent 38%), linear-gradient(135deg, ${stat.gradientFrom} 0%, ${stat.gradientTo} 100%)` } : undefined}
+            >
+              <div className="flex items-center justify-between mb-3">
+                <p className={`text-xs font-medium ${stat.gradient ? "text-white/75" : "text-muted-foreground"}`}>{stat.label}</p>
+                <div className={`w-8 h-8 rounded-lg ${stat.iconBg} flex items-center justify-center`}>
+                  <stat.icon className={`w-4 h-4 ${stat.iconColor}`} />
                 </div>
               </div>
-              <p className={`text-2xl font-heading font-bold ${stat.color}`}>{stat.value}</p>
-              <p className="text-xs text-muted-foreground mt-0.5">{stat.sub}</p>
+              <p className={`text-2xl font-heading font-bold ${stat.valueColor}`}>{stat.value}</p>
+              <p className={`text-xs mt-0.5 ${stat.gradient ? "text-white/70" : "text-muted-foreground"}`}>{stat.sub}</p>
             </div>
           ))}
         </div>
@@ -205,26 +215,28 @@ export default function Dashboard() {
           </div>
         )}
 
-        {/* Tab navigation */}
-        <div className="flex gap-1 bg-white rounded-xl p-1 border border-gray-100 shadow-sm mb-6 w-fit">
-          {tabs.map(tab => (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                activeTab === tab.id
-                  ? "bg-primary text-white shadow-sm"
-                  : "text-muted-foreground hover:text-foreground"
-              }`}
-            >
-              <tab.icon className="w-4 h-4" />
-              {tab.label}
-            </button>
-          ))}
+        {/* Tab navigation — straddles container top: 40% above, 60% inside */}
+        <div className="flex justify-center relative z-10 -mb-[26px] py-2">
+          <div className="flex gap-1 bg-gradient-to-b from-white/90 to-white/65 backdrop-blur-md rounded-2xl p-1 border border-b-0 border-white/70 w-fit shadow-soft">
+            {tabs.map(tab => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`flex items-center gap-0 sm:gap-2 px-2.5 sm:px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                  activeTab === tab.id
+                    ? "bg-white text-primary shadow-[0_2px_8px_rgba(28,75,140,0.14),0_1px_2px_rgba(28,75,140,0.10),inset_0_1px_0_rgba(255,255,255,0.90)] ring-1 ring-primary/15"
+                    : "text-muted-foreground hover:text-foreground hover:bg-white/40 hover:shadow-[0_1px_3px_rgba(28,75,140,0.06)]"
+                }`}
+              >
+                <tab.icon className="w-4 h-4" />
+                <span className="hidden sm:inline">{tab.label}</span>
+              </button>
+            ))}
+          </div>
         </div>
 
-        {/* Tab content */}
-        <div className="bg-white rounded-xl border border-gray-100 p-6 shadow-sm">
+        {/* Tab content container */}
+        <div className="bg-white/75 backdrop-blur-md rounded-[56px] border border-white/50 px-6 pb-6 pt-10 shadow-soft relative">
           {activeTab === "overview" && <PropertiesTab />}
           {activeTab === "tickets" && <TicketsTab />}
           {activeTab === "recurring" && <RecurringTab />}
