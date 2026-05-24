@@ -30,28 +30,31 @@ export default function LandingPage() {
       </nav>
 
       {/* Hero */}
-      <section className="relative pt-20 pb-28 px-6 overflow-hidden min-h-[580px] flex items-center">
+      <section className="relative overflow-hidden min-h-[640px] flex items-center">
 
-        {/* ── Photo backsplash ── */}
-        <div className="absolute inset-0 pointer-events-none select-none">
-          {/* Stock photo: person relaxing by the sea — David Salamanca / Unsplash */}
+        {/* ── Full-bleed photo backsplash ── */}
+        {/* Photo: Alef Morais / Unsplash — woman laughing at golden-hour ocean */}
+        <div className="absolute inset-0 select-none pointer-events-none">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="https://images.unsplash.com/photo-1633100695251-582bda45f305?w=2200&q=82&auto=format&fit=crop&crop=right"
+            src="https://images.unsplash.com/photo-1765813137535-2835d6f5e335?w=2400&q=88&auto=format&fit=crop"
             alt=""
             aria-hidden="true"
-            className="w-full h-full object-cover object-right"
+            className="w-full h-full object-cover object-center"
           />
-          {/* Left-to-right gradient: full white behind text → transparent to reveal photo */}
-          <div className="absolute inset-0 bg-gradient-to-r from-white from-[40%] via-white/80 via-[60%] to-white/0" />
-          {/* Top + bottom feather to blend with nav and features section */}
-          <div className="absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-white to-transparent" />
-          <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-white to-transparent" />
+          {/* Left band: full white to protect copy legibility */}
+          <div className="absolute inset-0 bg-gradient-to-r from-white from-[44%] via-white/55 via-[62%] to-transparent" />
+          {/* Top fade: blends with sticky nav */}
+          <div className="absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-white to-transparent" />
+          {/* Bottom fade: blends into features section */}
+          <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-white to-transparent" />
         </div>
 
-        {/* ── Text content ── */}
-        <div className="relative w-full max-w-6xl mx-auto">
-          <div className="max-w-xl">
+        {/* ── Content: two-column grid ── */}
+        <div className="relative w-full max-w-6xl mx-auto px-6 py-24 grid lg:grid-cols-2 gap-12 items-center">
+
+          {/* LEFT — headline + CTAs */}
+          <div>
             <div className="inline-flex items-center gap-2 bg-blue-50 text-primary text-sm font-medium px-4 py-1.5 rounded-full mb-8 border border-blue-100">
               <CheckCircle className="w-4 h-4" />
               Built for independent landlords
@@ -73,7 +76,7 @@ export default function LandingPage() {
               </Link>
               <Link
                 href="/pricing"
-                className="inline-flex items-center justify-center bg-gray-100 text-foreground font-semibold px-8 py-3.5 rounded-xl hover:bg-gray-200 transition-all text-base"
+                className="inline-flex items-center justify-center bg-white/80 backdrop-blur-sm text-foreground font-semibold px-8 py-3.5 rounded-xl hover:bg-white transition-all border border-gray-200 text-base"
               >
                 View pricing
               </Link>
@@ -82,11 +85,70 @@ export default function LandingPage() {
               Free for 1 property · No credit card required
             </p>
           </div>
+
+          {/* RIGHT — floating PropKeep UI mockup cards */}
+          <div className="hidden lg:block relative h-[480px]">
+
+            {/* Card 1: Ticket resolved */}
+            <div className="absolute top-6 left-0 w-[288px] bg-white/90 backdrop-blur-md rounded-2xl p-4 shadow-2xl shadow-black/10 border border-white/80">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center shrink-0">
+                  <CheckCircle className="w-4 h-4 text-green-600" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-semibold text-gray-900 leading-none mb-0.5">Ticket resolved</p>
+                  <p className="text-xs text-gray-500">Water heater leak · Unit 2A</p>
+                </div>
+                <span className="text-[10px] text-gray-400 shrink-0">Just now</span>
+              </div>
+              <div className="bg-gray-50 rounded-xl px-3 py-2.5 flex items-center justify-between">
+                <span className="text-xs text-gray-500">Repair cost logged</span>
+                <span className="text-xs font-semibold text-gray-800">$185.00</span>
+              </div>
+            </div>
+
+            {/* Card 2: Properties at-a-glance */}
+            <div className="absolute top-[168px] left-[28px] w-[308px] bg-white/90 backdrop-blur-md rounded-2xl p-4 shadow-2xl shadow-black/10 border border-white/80">
+              <div className="flex items-center justify-between mb-3">
+                <p className="text-sm font-semibold text-gray-900">Your Properties</p>
+                <span className="text-[10px] font-semibold bg-green-100 text-green-700 px-2 py-0.5 rounded-full">All clear ✓</span>
+              </div>
+              <div className="space-y-2 mb-3">
+                {[
+                  { name: "Speedway Duplex", detail: "2 units · 0 open tickets" },
+                  { name: "Sunshine Dr Rental", detail: "1 unit · 0 open tickets" },
+                ].map((p) => (
+                  <div key={p.name} className="flex items-center gap-2.5 px-2.5 py-2 bg-gray-50 rounded-xl">
+                    <div className="w-7 h-7 rounded-lg bg-blue-50 flex items-center justify-center shrink-0">
+                      <Building2 className="w-3.5 h-3.5 text-primary" />
+                    </div>
+                    <div>
+                      <p className="text-xs font-medium text-gray-800 leading-none mb-0.5">{p.name}</p>
+                      <p className="text-[10px] text-gray-500">{p.detail}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div className="pt-2.5 border-t border-gray-100 flex gap-4 text-xs text-gray-500">
+                <span><strong className="text-gray-800">3</strong> tenants</span>
+                <span><strong className="text-gray-800">$4,820</strong> tracked</span>
+                <span><strong className="text-gray-800">0</strong> overdue</span>
+              </div>
+            </div>
+
+            {/* Card 3: Monthly expenses chip */}
+            <div className="absolute top-[378px] left-[56px] bg-white/90 backdrop-blur-md rounded-2xl px-5 py-3.5 shadow-2xl shadow-black/10 border border-white/80">
+              <p className="text-[10px] font-semibold text-gray-400 uppercase tracking-widest mb-1">Monthly Expenses</p>
+              <p className="text-[28px] font-bold text-gray-900 leading-none mb-1">$4,820</p>
+              <p className="text-xs text-primary font-medium">All receipts logged ↑</p>
+            </div>
+
+          </div>
         </div>
 
         {/* Photo credit */}
-        <span className="absolute bottom-3 right-4 text-[10px] text-muted-foreground/50 pointer-events-none select-none">
-          Photo: David Salamanca / Unsplash
+        <span className="absolute bottom-3 right-4 text-[10px] text-gray-400/60 pointer-events-none select-none">
+          Photo: Alef Morais / Unsplash
         </span>
       </section>
 
