@@ -30,11 +30,23 @@ export default function LandingPage() {
       </nav>
 
       {/* Hero */}
-      <section className="bg-gradient-to-br from-white via-slate-50/60 to-blue-50/20 pt-16 pb-20 px-6">
-        <div className="max-w-6xl mx-auto grid lg:grid-cols-[1fr_1.15fr] gap-14 items-center">
+      <section className="relative overflow-hidden pt-16 pb-20 px-6">
 
-          {/* LEFT — headline + CTAs */}
-          <div>
+        {/* Background — aerial neighbourhood photo */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="https://images.unsplash.com/photo-1758304480340-cb2c43aafd4f?w=2400&q=85&auto=format&fit=crop"
+          alt=""
+          aria-hidden="true"
+          className="absolute inset-0 w-full h-full object-cover object-center"
+        />
+        {/* Subtle tinted overlay for depth + brand tint */}
+        <div className="absolute inset-0 bg-gradient-to-br from-slate-900/30 via-blue-950/10 to-slate-800/25" />
+
+        <div className="relative max-w-6xl mx-auto grid lg:grid-cols-[1fr_1.15fr] gap-14 items-center">
+
+          {/* LEFT — headline + CTAs inside glassmorphic card */}
+          <div className="bg-white/80 backdrop-blur-md border border-white/60 rounded-2xl px-8 py-8 shadow-2xl shadow-black/15">
             <div className="inline-flex items-center gap-2 bg-blue-50 text-primary text-sm font-medium px-4 py-1.5 rounded-full mb-8 border border-blue-100">
               <CheckCircle className="w-4 h-4" />
               Built for independent landlords
@@ -67,10 +79,10 @@ export default function LandingPage() {
           </div>
 
           {/* RIGHT — PropKeep dashboard preview (matches real app UI) */}
-          <div className="hidden lg:flex flex-col h-[580px] rounded-3xl overflow-hidden shadow-2xl border border-gray-200/50 bg-[#EEF2F6]">
+          <div className="hidden lg:flex flex-col h-[580px] rounded-3xl overflow-hidden shadow-2xl border border-white/25 bg-white/10 backdrop-blur-sm">
 
-            {/* ── App topbar ── */}
-            <div className="bg-white border-b border-gray-100 px-4 h-12 flex items-center justify-between shrink-0">
+            {/* ── App topbar — glassmorphic ── */}
+            <div className="bg-white/70 backdrop-blur-md border-b border-white/40 px-4 h-12 flex items-center justify-between shrink-0">
               <div className="flex items-center gap-2">
                 <LogoIcon className="w-5 h-5" />
                 <span className="text-sm font-bold text-gray-900">PropKeep</span>
@@ -84,7 +96,7 @@ export default function LandingPage() {
             </div>
 
             {/* ── Dashboard body ── */}
-            <div className="flex-1 p-4 space-y-3 overflow-hidden">
+            <div className="flex-1 p-4 space-y-3 overflow-hidden bg-[#EEF2F6]">
 
               {/* Greeting */}
               <div>
