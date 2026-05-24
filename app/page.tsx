@@ -79,10 +79,10 @@ export default function LandingPage() {
           </div>
 
           {/* RIGHT — PropKeep dashboard preview (matches real app UI) */}
-          <div className="hidden lg:flex flex-col h-[580px] rounded-3xl overflow-hidden shadow-2xl border border-white/25 bg-white/10 backdrop-blur-sm">
+          <div className="hidden lg:flex flex-col h-[580px] rounded-3xl overflow-hidden shadow-2xl border border-gray-200/50 bg-[#EEF2F6]">
 
-            {/* ── App topbar — glassmorphic ── */}
-            <div className="bg-white/70 backdrop-blur-md border-b border-white/40 px-4 h-12 flex items-center justify-between shrink-0">
+            {/* ── App topbar ── */}
+            <div className="bg-white border-b border-gray-100 px-4 h-12 flex items-center justify-between shrink-0">
               <div className="flex items-center gap-2">
                 <LogoIcon className="w-5 h-5" />
                 <span className="text-sm font-bold text-gray-900">PropKeep</span>
