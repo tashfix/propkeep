@@ -2,7 +2,7 @@
 import { useState, useRef } from "react";
 import { useStore } from "@/lib/store";
 import { Ticket, Appliance, Property, Unit, matchProvider, mockProviders, ServiceProvider } from "@/lib/mock-data";
-import { Wrench, Plus, Trash2, Check, CheckCircle, Clock, AlertCircle, Package, X, ImageIcon, Sparkles, Star, CheckCircle2, ExternalLink, CalendarCheck, Droplets, Zap, Wind, Hammer } from "lucide-react";
+import { Wrench, Plus, Trash2, Check, CheckCircle, Clock, AlertCircle, Package, X, ImageIcon, Sparkles, Star, CheckCircle2, ExternalLink, CalendarCheck, Droplets, Zap, Wind, Hammer, ChevronLeft, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -61,7 +61,7 @@ function ServiceSuggestionDialog({
   const { attachBooking } = useStore();
   const isManageMode = !!ticket.bookingProviderId;
   const [open, setOpen] = useState(false);
-  const [step, setStep] = useState<"suggest" | "confirmed">(isManageMode ? "confirmed" : "suggest");
+  const [step, setStep] = useState<"suggest" | "browse" | "confirmed">(isManageMode ? "confirmed" : "suggest");
   const [form, setForm] = useState({
     issueSummary: ticket.title + (ticket.description ? ` — ${ticket.description}` : ""),
     preferredTime: "tomorrow-morning",
@@ -71,9 +71,11 @@ function ServiceSuggestionDialog({
   // Track whether a new booking was just confirmed (vs. just viewing manage mode)
   const isNewBooking = useRef(false);
 
-  const provider = isManageMode
+  const defaultProvider = isManageMode
     ? (mockProviders.find(p => p.id === ticket.bookingProviderId) ?? matchProvider(ticket.category))
     : matchProvider(ticket.category);
+  const [selectedProvider, setSelectedProvider] = useState<ServiceProvider>(defaultProvider);
+  const provider = selectedProvider;
 
   const handleOpen = (val: boolean) => {
     if (val) {
@@ -116,7 +118,64 @@ function ServiceSuggestionDialog({
       </DialogTrigger>
 
       <DialogContent className="max-w-md">
-        {step === "suggest" ? (
+        {step === "browse" ? (
+          /* ─── Browse all providers ─── */
+          <>
+            <DialogHeader>
+              <DialogTitle className="flex items-center gap-2">
+                <button
+                  onClick={() => setStep("suggest")}
+                  className="p-1 rounded-md hover:bg-muted transition-colors"
+                  aria-label="Back"
+                >
+                  <ChevronLeft className="w-4 h-4" />
+                </button>
+                Other Providers
+              </DialogTitle>
+            </DialogHeader>
+            <div className="space-y-2 max-h-[420px] overflow-y-auto -mx-1 px-1 pt-1">
+              {mockProviders.map((p) => (
+                <button
+                  key={p.id}
+                  onClick={() => { setSelectedProvider(p); setStep("suggest"); }}
+                  className={`w-full rounded-xl border p-3 flex items-center gap-3 text-left transition-all hover:border-primary/40 hover:bg-muted/30 ${
+                    p.id === provider.id
+                      ? "border-primary bg-primary/5 ring-1 ring-primary/20"
+                      : "border-border bg-muted/10"
+                  }`}
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={`${p.photoUrl}?w=100&q=80&auto=format&fit=crop&crop=face`}
+                    alt={p.name}
+                    className="w-10 h-10 rounded-full object-cover shrink-0"
+                  />
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-1.5 flex-wrap mb-0.5">
+                      <span className="font-semibold text-sm">{p.name}</span>
+                      <span className={`text-[10px] font-semibold px-1.5 py-0.5 rounded-full ${platformStyles[p.platform]}`}>
+                        {p.platform}
+                      </span>
+                    </div>
+                    <p className="text-xs text-muted-foreground">{p.specialty}</p>
+                    <div className="flex items-center gap-1.5 mt-0.5 text-xs">
+                      <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
+                      <span className="font-medium">{p.rating}</span>
+                      <span className="text-muted-foreground">({p.reviewCount})</span>
+                      <span className="text-muted-foreground">·</span>
+                      <span className="font-medium">${p.hourlyRate}/hr</span>
+                      <span className="text-muted-foreground">·</span>
+                      <span className="text-green-600 font-medium">{p.responseTime}</span>
+                    </div>
+                  </div>
+                  {p.id === provider.id && (
+                    <CheckCircle2 className="w-4 h-4 text-primary shrink-0" />
+                  )}
+                </button>
+              ))}
+            </div>
+          </>
+        ) : step === "suggest" ? (
           <>
             <DialogHeader>
               <DialogTitle className="flex items-center gap-2">
@@ -129,10 +188,13 @@ function ServiceSuggestionDialog({
               {/* Provider card */}
               <div className="rounded-xl border bg-gradient-to-br from-muted/40 to-muted/10 p-4">
                 <div className="flex items-start gap-3">
-                  {/* Avatar */}
-                  <div className={`w-11 h-11 rounded-full ${provider.avatarColor} flex items-center justify-center text-white font-bold text-sm shrink-0`}>
-                    {provider.avatarInitials}
-                  </div>
+                  {/* Headshot */}
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={`${provider.photoUrl}?w=120&q=80&auto=format&fit=crop&crop=face`}
+                    alt={provider.name}
+                    className="w-11 h-11 rounded-full object-cover shrink-0"
+                  />
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 flex-wrap">
                       <span className="font-semibold text-sm">{provider.name}</span>
@@ -154,6 +216,15 @@ function ServiceSuggestionDialog({
                   </div>
                 </div>
               </div>
+
+              {/* Browse other providers */}
+              <button
+                onClick={() => setStep("browse")}
+                className="w-full flex items-center justify-center gap-1.5 text-xs text-muted-foreground hover:text-primary transition-colors py-0.5"
+              >
+                <Users className="w-3 h-3" />
+                Browse other providers
+              </button>
 
               {/* Pre-filled service request */}
               <div className="space-y-3">

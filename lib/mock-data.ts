@@ -97,16 +97,17 @@ export type ServiceProvider = {
   hourlyRate: number;
   responseTime: string;
   avatarInitials: string;
-  avatarColor: string;  // Tailwind bg class
+  avatarColor: string;  // Tailwind bg class (fallback)
+  photoUrl: string;
 };
 
 export const mockProviders: ServiceProvider[] = [
-  { id: "sp1", name: "Randy K.", platform: "TaskRabbit", specialty: "Plumbing & Water Damage", categories: ["plumbing"], rating: 4.9, reviewCount: 312, hourlyRate: 85, responseTime: "Within 2 hours", avatarInitials: "RK", avatarColor: "bg-blue-500" },
-  { id: "sp2", name: "Marco T.", platform: "Thumbtack", specialty: "HVAC & Climate Systems", categories: ["hvac"], rating: 4.8, reviewCount: 178, hourlyRate: 95, responseTime: "Within 3 hours", avatarInitials: "MT", avatarColor: "bg-orange-500" },
-  { id: "sp3", name: "Sarah M.", platform: "Angi", specialty: "Licensed Electrician", categories: ["electrical"], rating: 4.9, reviewCount: 245, hourlyRate: 90, responseTime: "Within 2 hours", avatarInitials: "SM", avatarColor: "bg-yellow-500" },
-  { id: "sp4", name: "Dave L.", platform: "TaskRabbit", specialty: "Appliance Repair Specialist", categories: ["appliance"], rating: 4.7, reviewCount: 421, hourlyRate: 75, responseTime: "Same day", avatarInitials: "DL", avatarColor: "bg-green-500" },
-  { id: "sp5", name: "Tom W.", platform: "Thumbtack", specialty: "General Contractor", categories: ["structural"], rating: 4.8, reviewCount: 156, hourlyRate: 80, responseTime: "Within 4 hours", avatarInitials: "TW", avatarColor: "bg-stone-500" },
-  { id: "sp6", name: "Alex B.", platform: "TaskRabbit", specialty: "Handyman Pro", categories: ["other", "plumbing", "electrical"], rating: 4.6, reviewCount: 534, hourlyRate: 65, responseTime: "Within 1 hour", avatarInitials: "AB", avatarColor: "bg-violet-500" },
+  { id: "sp1", name: "Randy K.", platform: "TaskRabbit", specialty: "Plumbing & Water Damage",    categories: ["plumbing"],                        rating: 4.9, reviewCount: 312, hourlyRate: 85, responseTime: "Within 2 hours", avatarInitials: "RK", avatarColor: "bg-blue-500",   photoUrl: "https://images.unsplash.com/photo-1705645930353-0e335311ef20" },
+  { id: "sp2", name: "Marco T.", platform: "Thumbtack",   specialty: "HVAC & Climate Systems",       categories: ["hvac"],                            rating: 4.8, reviewCount: 178, hourlyRate: 95, responseTime: "Within 3 hours", avatarInitials: "MT", avatarColor: "bg-orange-500", photoUrl: "https://images.unsplash.com/photo-1651684215020-f7a5b6610f23" },
+  { id: "sp3", name: "Sarah M.", platform: "Angi",        specialty: "Licensed Electrician",         categories: ["electrical"],                      rating: 4.9, reviewCount: 245, hourlyRate: 90, responseTime: "Within 2 hours", avatarInitials: "SM", avatarColor: "bg-yellow-500", photoUrl: "https://images.unsplash.com/photo-1494790108377-be9c29b29330" },
+  { id: "sp4", name: "Dave L.",  platform: "TaskRabbit", specialty: "Appliance Repair Specialist",   categories: ["appliance"],                       rating: 4.7, reviewCount: 421, hourlyRate: 75, responseTime: "Same day",       avatarInitials: "DL", avatarColor: "bg-green-500",  photoUrl: "https://images.unsplash.com/photo-1592234789031-94bf65f630ed" },
+  { id: "sp5", name: "Tom W.",   platform: "Thumbtack",   specialty: "General Contractor",           categories: ["structural"],                      rating: 4.8, reviewCount: 156, hourlyRate: 80, responseTime: "Within 4 hours", avatarInitials: "TW", avatarColor: "bg-stone-500",  photoUrl: "https://images.unsplash.com/photo-1625241152315-4a698f74ceb7" },
+  { id: "sp6", name: "Alex B.",  platform: "TaskRabbit", specialty: "Handyman Pro",                  categories: ["other", "plumbing", "electrical"], rating: 4.6, reviewCount: 534, hourlyRate: 65, responseTime: "Within 1 hour",  avatarInitials: "AB", avatarColor: "bg-violet-500", photoUrl: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e" },
 ];
 
 export function matchProvider(category: Ticket["category"]): ServiceProvider {
