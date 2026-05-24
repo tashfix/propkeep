@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Wrench, Building2, Receipt, Bell, CheckCircle, ArrowRight } from "lucide-react";
 import { LogoIcon } from "@/components/ui/logo-icon";
+import { HeroIllustration } from "@/components/ui/hero-illustration";
 
 export default function LandingPage() {
   return (
@@ -30,37 +31,52 @@ export default function LandingPage() {
       </nav>
 
       {/* Hero */}
-      <section className="pt-20 pb-24 px-6">
-        <div className="max-w-4xl mx-auto text-center">
-          <div className="inline-flex items-center gap-2 bg-blue-50 text-primary text-sm font-medium px-4 py-1.5 rounded-full mb-8 border border-blue-100">
-            <CheckCircle className="w-4 h-4" />
-            Built for independent landlords
+      <section className="relative pt-20 pb-24 px-6 overflow-hidden">
+        {/* Soft gradient backsplash */}
+        <div className="absolute inset-0 bg-gradient-to-br from-white via-blue-50/25 to-blue-100/15 pointer-events-none" />
+
+        <div className="relative max-w-6xl mx-auto">
+          <div className="grid lg:grid-cols-2 gap-10 items-center min-h-[460px]">
+
+            {/* Left — copy */}
+            <div>
+              <div className="inline-flex items-center gap-2 bg-blue-50 text-primary text-sm font-medium px-4 py-1.5 rounded-full mb-8 border border-blue-100">
+                <CheckCircle className="w-4 h-4" />
+                Built for independent landlords
+              </div>
+              <h1 className="font-heading text-5xl md:text-6xl font-bold text-foreground leading-tight mb-6">
+                Never miss a repair.{" "}
+                <span className="text-primary">Never lose a receipt.</span>
+              </h1>
+              <p className="text-xl text-muted-foreground max-w-xl mb-10 leading-relaxed">
+                PropKeep keeps your rental properties maintained, organized, and profitable —
+                without the chaos.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4">
+                <Link
+                  href="/dashboard"
+                  className="inline-flex items-center justify-center gap-2 bg-primary text-white font-semibold px-8 py-3.5 rounded-xl hover:bg-primary/90 transition-all shadow-lg shadow-primary/25 text-base"
+                >
+                  View demo dashboard <ArrowRight className="w-5 h-5" />
+                </Link>
+                <Link
+                  href="/pricing"
+                  className="inline-flex items-center justify-center bg-gray-100 text-foreground font-semibold px-8 py-3.5 rounded-xl hover:bg-gray-200 transition-all text-base"
+                >
+                  View pricing
+                </Link>
+              </div>
+              <p className="mt-4 text-sm text-muted-foreground">
+                Free for 1 property · No credit card required
+              </p>
+            </div>
+
+            {/* Right — lifestyle illustration */}
+            <div className="hidden lg:flex items-center justify-end h-[480px] w-full">
+              <HeroIllustration />
+            </div>
+
           </div>
-          <h1 className="font-heading text-5xl md:text-6xl font-bold text-foreground leading-tight mb-6">
-            Never miss a repair.{" "}
-            <span className="text-primary">Never lose a receipt.</span>
-          </h1>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed">
-            PropKeep keeps your rental properties maintained, organized, and profitable —
-            without the chaos.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              href="/dashboard"
-              className="inline-flex items-center justify-center gap-2 bg-primary text-white font-semibold px-8 py-3.5 rounded-xl hover:bg-primary/90 transition-all shadow-lg shadow-primary/25 text-base"
-            >
-              View demo dashboard <ArrowRight className="w-5 h-5" />
-            </Link>
-            <Link
-              href="/pricing"
-              className="inline-flex items-center justify-center bg-gray-100 text-foreground font-semibold px-8 py-3.5 rounded-xl hover:bg-gray-200 transition-all text-base"
-            >
-              View pricing
-            </Link>
-          </div>
-          <p className="mt-4 text-sm text-muted-foreground">
-            Free for 1 property · No credit card required
-          </p>
         </div>
       </section>
 
