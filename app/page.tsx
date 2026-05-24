@@ -40,13 +40,13 @@ export default function LandingPage() {
           aria-hidden="true"
           className="absolute inset-0 w-full h-full object-cover object-center"
         />
-        {/* Subtle tinted overlay for depth + brand tint */}
-        <div className="absolute inset-0 bg-gradient-to-br from-slate-900/30 via-blue-950/10 to-slate-800/25" />
+        {/* Light veil — lets neighbourhood colours bleed through the glass panels */}
+        <div className="absolute inset-0 bg-black/20" />
 
         <div className="relative max-w-6xl mx-auto grid lg:grid-cols-[1fr_1.15fr] gap-14 items-center">
 
           {/* LEFT — headline + CTAs inside glassmorphic card */}
-          <div className="bg-white/80 backdrop-blur-md border border-white/60 rounded-2xl px-8 py-8 shadow-2xl shadow-black/15">
+          <div className="bg-white/75 backdrop-blur-2xl border border-white/90 rounded-2xl px-8 py-8 shadow-xl shadow-black/10">
             <div className="inline-flex items-center gap-2 bg-blue-50 text-primary text-sm font-medium px-4 py-1.5 rounded-full mb-8 border border-blue-100">
               <CheckCircle className="w-4 h-4" />
               Built for independent landlords
@@ -79,10 +79,10 @@ export default function LandingPage() {
           </div>
 
           {/* RIGHT — PropKeep dashboard preview (matches real app UI) */}
-          <div className="hidden lg:flex flex-col h-[580px] rounded-3xl overflow-hidden shadow-2xl border border-gray-200/50 bg-[#EEF2F6]">
+          <div className="hidden lg:flex flex-col h-[580px] rounded-3xl overflow-hidden shadow-2xl border border-white/60 bg-[#EEF2F6]">
 
-            {/* ── App topbar ── */}
-            <div className="bg-white border-b border-gray-100 px-4 h-12 flex items-center justify-between shrink-0">
+            {/* ── App topbar — Apple glass ── */}
+            <div className="bg-white/80 backdrop-blur-2xl border-b border-white/50 px-4 h-12 flex items-center justify-between shrink-0">
               <div className="flex items-center gap-2">
                 <LogoIcon className="w-5 h-5" />
                 <span className="text-sm font-bold text-gray-900">PropKeep</span>
