@@ -75,10 +75,10 @@ export default function LandingPage() {
             <img
               src="https://images.unsplash.com/photo-1741802856123-04d9f001270f?w=1400&q=90&auto=format&fit=crop&crop=center"
               alt="Person enjoying a carefree moment at the beach"
-              className="absolute inset-0 w-full h-full object-cover object-center rounded-3xl"
+              className="absolute inset-0 w-full h-full object-cover object-center rounded-3xl saturate-[78%] hue-rotate-[14deg]"
             />
-            {/* Subtle vignette so white UI cards read cleanly */}
-            <div className="absolute inset-0 rounded-3xl bg-gradient-to-t from-black/18 via-transparent to-black/8 pointer-events-none" />
+            {/* Subtle blue-tinted vignette — cools the warm photo tones to match brand */}
+            <div className="absolute inset-0 rounded-3xl bg-gradient-to-t from-slate-900/20 via-blue-950/5 to-transparent pointer-events-none" />
 
             {/* ── Floating PropKeep UI cards ── */}
 
