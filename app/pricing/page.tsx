@@ -63,7 +63,7 @@ export default function PricingPage() {
                 </li>
               ))}
             </ul>
-            <Link href="/dashboard" className="block text-center bg-white text-primary font-semibold py-2.5 rounded-xl hover:bg-blue-50 transition-colors text-sm">
+            <Link href="/checkout" className="block text-center bg-white text-primary font-semibold py-2.5 rounded-xl hover:bg-blue-50 transition-colors text-sm">
               Upgrade to Plus
             </Link>
           </div>
