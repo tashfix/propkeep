@@ -80,9 +80,16 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen relative">
-      {/* Wave background */}
+      {/* Abstract background — Apple-style soft blue wave */}
       <div aria-hidden className="pointer-events-none fixed inset-0 -z-10">
-        <img src="/wave-bg.svg" alt="" className="w-full h-full object-cover object-center" />
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="https://images.unsplash.com/photo-1749877217773-6c844c38c874?w=2400&q=90&auto=format&fit=crop"
+          alt=""
+          className="w-full h-full object-cover object-center"
+        />
+        {/* Light veil — softens saturation so UI elements stay foreground */}
+        <div className="absolute inset-0 bg-white/25" />
       </div>
       {/* Topbar */}
       <header className="bg-white/80 backdrop-blur-md border-b border-white/40 sticky top-0 z-40">
