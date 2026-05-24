@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { Wrench, Building2, Receipt, Bell, CheckCircle, ArrowRight } from "lucide-react";
 import { LogoIcon } from "@/components/ui/logo-icon";
-import { HeroIllustration } from "@/components/ui/hero-illustration";
 
 export default function LandingPage() {
   return (
@@ -31,53 +30,64 @@ export default function LandingPage() {
       </nav>
 
       {/* Hero */}
-      <section className="relative pt-20 pb-24 px-6 overflow-hidden">
-        {/* Soft gradient backsplash */}
-        <div className="absolute inset-0 bg-gradient-to-br from-white via-blue-50/25 to-blue-100/15 pointer-events-none" />
+      <section className="relative pt-20 pb-28 px-6 overflow-hidden min-h-[580px] flex items-center">
 
-        <div className="relative max-w-6xl mx-auto">
-          <div className="grid lg:grid-cols-2 gap-10 items-center min-h-[460px]">
+        {/* ── Photo backsplash ── */}
+        <div className="absolute inset-0 pointer-events-none select-none">
+          {/* Stock photo: person relaxing by the sea — David Salamanca / Unsplash */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="https://images.unsplash.com/photo-1633100695251-582bda45f305?w=2200&q=82&auto=format&fit=crop&crop=right"
+            alt=""
+            aria-hidden="true"
+            className="w-full h-full object-cover object-right"
+          />
+          {/* Left-to-right gradient: full white behind text → transparent to reveal photo */}
+          <div className="absolute inset-0 bg-gradient-to-r from-white from-[40%] via-white/80 via-[60%] to-white/0" />
+          {/* Top + bottom feather to blend with nav and features section */}
+          <div className="absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-white to-transparent" />
+          <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-white to-transparent" />
+        </div>
 
-            {/* Left — copy */}
-            <div>
-              <div className="inline-flex items-center gap-2 bg-blue-50 text-primary text-sm font-medium px-4 py-1.5 rounded-full mb-8 border border-blue-100">
-                <CheckCircle className="w-4 h-4" />
-                Built for independent landlords
-              </div>
-              <h1 className="font-heading text-5xl md:text-6xl font-bold text-foreground leading-tight mb-6">
-                Never miss a repair.{" "}
-                <span className="text-primary">Never lose a receipt.</span>
-              </h1>
-              <p className="text-xl text-muted-foreground max-w-xl mb-10 leading-relaxed">
-                PropKeep keeps your rental properties maintained, organized, and profitable —
-                without the chaos.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Link
-                  href="/dashboard"
-                  className="inline-flex items-center justify-center gap-2 bg-primary text-white font-semibold px-8 py-3.5 rounded-xl hover:bg-primary/90 transition-all shadow-lg shadow-primary/25 text-base"
-                >
-                  View demo dashboard <ArrowRight className="w-5 h-5" />
-                </Link>
-                <Link
-                  href="/pricing"
-                  className="inline-flex items-center justify-center bg-gray-100 text-foreground font-semibold px-8 py-3.5 rounded-xl hover:bg-gray-200 transition-all text-base"
-                >
-                  View pricing
-                </Link>
-              </div>
-              <p className="mt-4 text-sm text-muted-foreground">
-                Free for 1 property · No credit card required
-              </p>
+        {/* ── Text content ── */}
+        <div className="relative w-full max-w-6xl mx-auto">
+          <div className="max-w-xl">
+            <div className="inline-flex items-center gap-2 bg-blue-50 text-primary text-sm font-medium px-4 py-1.5 rounded-full mb-8 border border-blue-100">
+              <CheckCircle className="w-4 h-4" />
+              Built for independent landlords
             </div>
-
-            {/* Right — lifestyle illustration */}
-            <div className="hidden lg:flex items-center justify-end h-[480px] w-full">
-              <HeroIllustration />
+            <h1 className="font-heading text-5xl md:text-6xl font-bold text-foreground leading-tight mb-6">
+              Never miss a repair.{" "}
+              <span className="text-primary">Never lose a receipt.</span>
+            </h1>
+            <p className="text-xl text-muted-foreground max-w-lg mb-10 leading-relaxed">
+              PropKeep keeps your rental properties maintained, organized, and profitable —
+              without the chaos.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4">
+              <Link
+                href="/dashboard"
+                className="inline-flex items-center justify-center gap-2 bg-primary text-white font-semibold px-8 py-3.5 rounded-xl hover:bg-primary/90 transition-all shadow-lg shadow-primary/25 text-base"
+              >
+                View demo dashboard <ArrowRight className="w-5 h-5" />
+              </Link>
+              <Link
+                href="/pricing"
+                className="inline-flex items-center justify-center bg-gray-100 text-foreground font-semibold px-8 py-3.5 rounded-xl hover:bg-gray-200 transition-all text-base"
+              >
+                View pricing
+              </Link>
             </div>
-
+            <p className="mt-4 text-sm text-muted-foreground">
+              Free for 1 property · No credit card required
+            </p>
           </div>
         </div>
+
+        {/* Photo credit */}
+        <span className="absolute bottom-3 right-4 text-[10px] text-muted-foreground/50 pointer-events-none select-none">
+          Photo: David Salamanca / Unsplash
+        </span>
       </section>
 
       {/* Feature Cards */}
