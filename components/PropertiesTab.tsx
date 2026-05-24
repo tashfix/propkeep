@@ -331,9 +331,11 @@ export default function PropertiesTab() {
                     <CardTitle className="text-base">{property.name}</CardTitle>
                     <p className="text-xs text-muted-foreground mt-0.5">{property.address}</p>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <Badge variant="secondary">{typeLabels[property.type]}</Badge>
-                    <button onClick={() => deleteProperty(property.id)} className="text-muted-foreground hover:text-destructive transition-colors p-1">
+                  <div className="flex items-center gap-2 shrink-0 ml-2">
+                    <Badge variant="secondary" className="max-w-[90px] overflow-hidden">
+                      <span className="block truncate">{typeLabels[property.type]}</span>
+                    </Badge>
+                    <button onClick={() => deleteProperty(property.id)} className="text-muted-foreground hover:text-destructive transition-colors p-1 shrink-0">
                       <Trash2 className="w-4 h-4" />
                     </button>
                   </div>
