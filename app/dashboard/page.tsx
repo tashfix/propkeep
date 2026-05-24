@@ -86,10 +86,10 @@ export default function Dashboard() {
         <img
           src="https://images.unsplash.com/photo-1749877217773-6c844c38c874?w=2400&q=90&auto=format&fit=crop"
           alt=""
-          className="w-full h-full object-cover object-center saturate-[40%]"
+          className="w-full h-full object-cover object-center saturate-[70%]"
         />
-        {/* White veil — pushes background well into the ambient zone */}
-        <div className="absolute inset-0 bg-white/50" />
+        {/* White veil — keeps background ambient while letting blue accents show */}
+        <div className="absolute inset-0 bg-white/35" />
       </div>
       {/* Topbar */}
       <header className="bg-white/80 backdrop-blur-md border-b border-white/40 sticky top-0 z-40">
