@@ -46,7 +46,7 @@ export default function LandingPage() {
         <div className="relative max-w-6xl mx-auto grid lg:grid-cols-[1fr_1.15fr] gap-14 items-center">
 
           {/* LEFT — headline + CTAs inside glassmorphic card */}
-          <div className="bg-white/50 backdrop-blur-xl border border-white/50 rounded-2xl px-8 py-8 shadow-2xl shadow-black/10">
+          <div className="bg-white/40 backdrop-blur-2xl border border-white/40 rounded-2xl px-8 py-8 shadow-2xl shadow-black/10">
             <div className="inline-flex items-center gap-2 bg-blue-50 text-primary text-sm font-medium px-4 py-1.5 rounded-full mb-8 border border-blue-100">
               <CheckCircle className="w-4 h-4" />
               Built for independent landlords
