@@ -110,32 +110,47 @@ export default function LandingPage() {
                 ))}
               </div>
 
-              {/* Property card — mirrors real PropertiesTab card */}
-              <div className="bg-white rounded-xl border border-gray-100 overflow-hidden shadow-sm">
-                {/* Street view placeholder */}
-                <div className="h-[86px] bg-gradient-to-br from-slate-200 via-slate-300 to-slate-200 flex items-center justify-center relative">
-                  <Building2 className="w-9 h-9 text-slate-400" />
-                  <div className="absolute bottom-1.5 right-1.5 flex items-center gap-1 bg-white/85 backdrop-blur-sm rounded px-1.5 py-0.5">
-                    <svg width="8" height="8" viewBox="0 0 24 24" fill="none"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" fill="#EA4335"/><circle cx="12" cy="9" r="2.5" fill="white"/></svg>
-                    <span className="text-[7px] text-gray-500 font-medium">Google Maps</span>
+              {/* Two property cards — mirrors real PropertiesTab cards */}
+              <div className="grid grid-cols-2 gap-2">
+                {[
+                  {
+                    name: "Speedway Duplex",
+                    address: "3814 Speedway, Austin",
+                    type: "Multi-Unit",
+                    units: 2,
+                    img: "https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=600&q=80&auto=format&fit=crop",
+                  },
+                  {
+                    name: "Sunshine Dr",
+                    address: "5204 Sunshine Dr, Austin",
+                    type: "Single Family",
+                    units: 1,
+                    img: "https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=600&q=80&auto=format&fit=crop",
+                  },
+                ].map((p) => (
+                  <div key={p.name} className="bg-white rounded-xl border border-gray-100 overflow-hidden shadow-sm">
+                    {/* Actual property photo */}
+                    <div className="h-[78px] overflow-hidden">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={p.img} alt={p.name} className="w-full h-full object-cover" />
+                    </div>
+                    <div className="px-2.5 pt-2 pb-2.5">
+                      <div className="flex items-start justify-between gap-1 mb-0.5">
+                        <p className="text-[10px] font-bold text-gray-900 leading-tight">{p.name}</p>
+                        <span className="text-[7px] bg-gray-100 text-gray-500 px-1.5 py-0.5 rounded-full font-medium shrink-0 whitespace-nowrap">{p.type}</span>
+                      </div>
+                      <p className="text-[8.5px] text-gray-400 mb-1.5">{p.address}</p>
+                      <div className="flex items-center gap-2 text-[8px]">
+                        <span className="flex items-center gap-0.5 text-gray-500">
+                          <Home className="w-2 h-2" />{p.units} {p.units > 1 ? "units" : "unit"}
+                        </span>
+                        <span className="flex items-center gap-0.5 text-green-600 font-medium">
+                          <span className="w-1 h-1 rounded-full bg-green-500 inline-block" />0 tickets
+                        </span>
+                      </div>
+                    </div>
                   </div>
-                </div>
-                {/* Card content */}
-                <div className="px-3 pt-2.5 pb-2">
-                  <div className="flex items-center justify-between mb-0.5">
-                    <p className="text-xs font-bold text-gray-900">Speedway Duplex</p>
-                    <span className="text-[8px] bg-gray-100 text-gray-600 px-1.5 py-0.5 rounded-full font-medium shrink-0 ml-1">Multi-Unit</span>
-                  </div>
-                  <p className="text-[9px] text-gray-500 mb-2">3814 Speedway, Austin, TX 78751</p>
-                  <div className="flex items-center gap-3 text-[9px]">
-                    <span className="flex items-center gap-1 text-gray-500">
-                      <Home className="w-2.5 h-2.5" /> 2 units
-                    </span>
-                    <span className="flex items-center gap-1 text-green-600 font-medium">
-                      <span className="w-1.5 h-1.5 rounded-full bg-green-500 inline-block" /> 0 open tickets
-                    </span>
-                  </div>
-                </div>
+                ))}
               </div>
 
               {/* Recent activity */}
