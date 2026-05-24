@@ -30,28 +30,8 @@ export default function LandingPage() {
       </nav>
 
       {/* Hero */}
-      <section className="relative overflow-hidden min-h-[640px] flex items-center">
-
-        {/* ── Full-bleed photo backsplash ── */}
-        {/* Photo: Alef Morais / Unsplash — woman laughing at golden-hour ocean */}
-        <div className="absolute inset-0 select-none pointer-events-none">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="https://images.unsplash.com/photo-1765813137535-2835d6f5e335?w=2400&q=88&auto=format&fit=crop"
-            alt=""
-            aria-hidden="true"
-            className="w-full h-full object-cover object-center"
-          />
-          {/* Left band: full white to protect copy legibility */}
-          <div className="absolute inset-0 bg-gradient-to-r from-white from-[44%] via-white/55 via-[62%] to-transparent" />
-          {/* Top fade: blends with sticky nav */}
-          <div className="absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-white to-transparent" />
-          {/* Bottom fade: blends into features section */}
-          <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-white to-transparent" />
-        </div>
-
-        {/* ── Content: two-column grid ── */}
-        <div className="relative w-full max-w-6xl mx-auto px-6 py-24 grid lg:grid-cols-2 gap-12 items-center">
+      <section className="bg-gradient-to-br from-white via-slate-50/60 to-blue-50/20 pt-16 pb-20 px-6">
+        <div className="max-w-6xl mx-auto grid lg:grid-cols-[1fr_1.15fr] gap-14 items-center">
 
           {/* LEFT — headline + CTAs */}
           <div>
@@ -76,7 +56,7 @@ export default function LandingPage() {
               </Link>
               <Link
                 href="/pricing"
-                className="inline-flex items-center justify-center bg-white/80 backdrop-blur-sm text-foreground font-semibold px-8 py-3.5 rounded-xl hover:bg-white transition-all border border-gray-200 text-base"
+                className="inline-flex items-center justify-center bg-gray-100 text-foreground font-semibold px-8 py-3.5 rounded-xl hover:bg-gray-200 transition-all text-base"
               >
                 View pricing
               </Link>
@@ -86,11 +66,24 @@ export default function LandingPage() {
             </p>
           </div>
 
-          {/* RIGHT — floating PropKeep UI mockup cards */}
-          <div className="hidden lg:block relative h-[480px]">
+          {/* RIGHT — photo card with floating UI overlays */}
+          {/* Photo is contained in a fixed-height card so it never zooms/crops unexpectedly */}
+          <div className="hidden lg:block relative h-[560px]">
+
+            {/* Photo — Karsten Winegeart / Unsplash: woman carefree at golden-hour beach */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="https://images.unsplash.com/photo-1741802856123-04d9f001270f?w=1400&q=90&auto=format&fit=crop&crop=center"
+              alt="Person enjoying a carefree moment at the beach"
+              className="absolute inset-0 w-full h-full object-cover object-center rounded-3xl"
+            />
+            {/* Subtle vignette so white UI cards read cleanly */}
+            <div className="absolute inset-0 rounded-3xl bg-gradient-to-t from-black/18 via-transparent to-black/8 pointer-events-none" />
+
+            {/* ── Floating PropKeep UI cards ── */}
 
             {/* Card 1: Ticket resolved */}
-            <div className="absolute top-6 left-0 w-[288px] bg-white/90 backdrop-blur-md rounded-2xl p-4 shadow-2xl shadow-black/10 border border-white/80">
+            <div className="absolute top-5 left-5 w-[272px] bg-white/92 backdrop-blur-md rounded-2xl p-4 shadow-2xl shadow-black/12 border border-white/70">
               <div className="flex items-center gap-3 mb-3">
                 <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center shrink-0">
                   <CheckCircle className="w-4 h-4 text-green-600" />
@@ -108,7 +101,7 @@ export default function LandingPage() {
             </div>
 
             {/* Card 2: Properties at-a-glance */}
-            <div className="absolute top-[168px] left-[28px] w-[308px] bg-white/90 backdrop-blur-md rounded-2xl p-4 shadow-2xl shadow-black/10 border border-white/80">
+            <div className="absolute top-[192px] left-[24px] w-[300px] bg-white/92 backdrop-blur-md rounded-2xl p-4 shadow-2xl shadow-black/12 border border-white/70">
               <div className="flex items-center justify-between mb-3">
                 <p className="text-sm font-semibold text-gray-900">Your Properties</p>
                 <span className="text-[10px] font-semibold bg-green-100 text-green-700 px-2 py-0.5 rounded-full">All clear ✓</span>
@@ -137,19 +130,19 @@ export default function LandingPage() {
             </div>
 
             {/* Card 3: Monthly expenses chip */}
-            <div className="absolute top-[378px] left-[56px] bg-white/90 backdrop-blur-md rounded-2xl px-5 py-3.5 shadow-2xl shadow-black/10 border border-white/80">
+            <div className="absolute top-[398px] left-[48px] bg-white/92 backdrop-blur-md rounded-2xl px-5 py-4 shadow-2xl shadow-black/12 border border-white/70">
               <p className="text-[10px] font-semibold text-gray-400 uppercase tracking-widest mb-1">Monthly Expenses</p>
               <p className="text-[28px] font-bold text-gray-900 leading-none mb-1">$4,820</p>
               <p className="text-xs text-primary font-medium">All receipts logged ↑</p>
             </div>
 
+            {/* Photo attribution */}
+            <span className="absolute bottom-2.5 right-3 text-[9px] text-white/45 select-none pointer-events-none">
+              Karsten Winegeart / Unsplash
+            </span>
           </div>
-        </div>
 
-        {/* Photo credit */}
-        <span className="absolute bottom-3 right-4 text-[10px] text-gray-400/60 pointer-events-none select-none">
-          Photo: Alef Morais / Unsplash
-        </span>
+        </div>
       </section>
 
       {/* Feature Cards */}
