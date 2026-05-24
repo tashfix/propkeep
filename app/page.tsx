@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Wrench, Building2, Receipt, Bell, CheckCircle, ArrowRight } from "lucide-react";
+import { Wrench, Building2, Receipt, Bell, CheckCircle, ArrowRight, Users, Home } from "lucide-react";
 import { LogoIcon } from "@/components/ui/logo-icon";
 
 export default function LandingPage() {
@@ -66,80 +66,91 @@ export default function LandingPage() {
             </p>
           </div>
 
-          {/* RIGHT — photo card with floating UI overlays */}
-          {/* Photo is contained in a fixed-height card so it never zooms/crops unexpectedly */}
-          <div className="hidden lg:block relative h-[560px]">
+          {/* RIGHT — PropKeep dashboard preview (matches real app UI) */}
+          <div className="hidden lg:flex flex-col h-[580px] rounded-3xl overflow-hidden shadow-2xl border border-gray-200/50 bg-[#EEF2F6]">
 
-            {/* Photo — Karsten Winegeart / Unsplash: woman carefree at golden-hour beach */}
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="https://images.unsplash.com/photo-1741802856123-04d9f001270f?w=1400&q=90&auto=format&fit=crop&crop=center"
-              alt="Person enjoying a carefree moment at the beach"
-              className="absolute inset-0 w-full h-full object-cover object-center rounded-3xl saturate-[78%] hue-rotate-[14deg]"
-            />
-            {/* Subtle blue-tinted vignette — cools the warm photo tones to match brand */}
-            <div className="absolute inset-0 rounded-3xl bg-gradient-to-t from-slate-900/20 via-blue-950/5 to-transparent pointer-events-none" />
-
-            {/* ── Floating PropKeep UI cards ── */}
-
-            {/* Card 1: Ticket resolved */}
-            <div className="absolute top-5 left-5 w-[272px] bg-white/92 backdrop-blur-md rounded-2xl p-4 shadow-2xl shadow-black/12 border border-white/70">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center shrink-0">
-                  <CheckCircle className="w-4 h-4 text-green-600" />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-semibold text-gray-900 leading-none mb-0.5">Ticket resolved</p>
-                  <p className="text-xs text-gray-500">Water heater leak · Unit 2A</p>
-                </div>
-                <span className="text-[10px] text-gray-400 shrink-0">Just now</span>
+            {/* ── App topbar ── */}
+            <div className="bg-white border-b border-gray-100 px-4 h-12 flex items-center justify-between shrink-0">
+              <div className="flex items-center gap-2">
+                <LogoIcon className="w-5 h-5" />
+                <span className="text-sm font-bold text-gray-900">PropKeep</span>
               </div>
-              <div className="bg-gray-50 rounded-xl px-3 py-2.5 flex items-center justify-between">
-                <span className="text-xs text-gray-500">Repair cost logged</span>
-                <span className="text-xs font-semibold text-gray-800">$185.00</span>
+              <div className="flex items-center gap-3">
+                <Bell className="w-4 h-4 text-gray-400" />
+                <div className="w-7 h-7 rounded-full bg-primary flex items-center justify-center">
+                  <span className="text-[10px] text-white font-bold">AJ</span>
+                </div>
               </div>
             </div>
 
-            {/* Card 2: Properties at-a-glance */}
-            <div className="absolute top-[192px] left-[24px] w-[300px] bg-white/92 backdrop-blur-md rounded-2xl p-4 shadow-2xl shadow-black/12 border border-white/70">
-              <div className="flex items-center justify-between mb-3">
-                <p className="text-sm font-semibold text-gray-900">Your Properties</p>
-                <span className="text-[10px] font-semibold bg-green-100 text-green-700 px-2 py-0.5 rounded-full">All clear ✓</span>
+            {/* ── Dashboard body ── */}
+            <div className="flex-1 p-4 space-y-3 overflow-hidden">
+
+              {/* Greeting */}
+              <div>
+                <p className="text-sm font-semibold text-gray-800">Good morning, Alex 👋</p>
+                <p className="text-[11px] text-gray-500">Sunday · 2 properties managed</p>
               </div>
-              <div className="space-y-2 mb-3">
+
+              {/* Stats row — 4 tiles matching the real dashboard */}
+              <div className="grid grid-cols-4 gap-2">
                 {[
-                  { name: "Speedway Duplex", detail: "2 units · 0 open tickets" },
-                  { name: "Sunshine Dr Rental", detail: "1 unit · 0 open tickets" },
-                ].map((p) => (
-                  <div key={p.name} className="flex items-center gap-2.5 px-2.5 py-2 bg-gray-50 rounded-xl">
-                    <div className="w-7 h-7 rounded-lg bg-blue-50 flex items-center justify-center shrink-0">
-                      <Building2 className="w-3.5 h-3.5 text-primary" />
+                  { label: "Tenants",  value: "3",     sub: "3 units",    Icon: Users,        grad: "from-blue-500 to-blue-600"    },
+                  { label: "Tickets",  value: "0",     sub: "all clear",  Icon: CheckCircle,  grad: "from-green-500 to-green-600"  },
+                  { label: "Overdue",  value: "0",     sub: "on track",   Icon: Bell,         grad: "from-amber-500 to-orange-500" },
+                  { label: "Expenses", value: "$4.8k", sub: "this month", Icon: Receipt,      grad: "from-violet-500 to-purple-600"},
+                ].map(({ label, value, sub, Icon, grad }) => (
+                  <div key={label} className="bg-white rounded-xl p-2.5 border border-gray-100 shadow-sm">
+                    <div className={`w-6 h-6 rounded-lg bg-gradient-to-br ${grad} flex items-center justify-center mb-2`}>
+                      <Icon className="w-3 h-3 text-white" />
                     </div>
-                    <div>
-                      <p className="text-xs font-medium text-gray-800 leading-none mb-0.5">{p.name}</p>
-                      <p className="text-[10px] text-gray-500">{p.detail}</p>
-                    </div>
+                    <p className="text-sm font-bold text-gray-900 leading-none mb-0.5">{value}</p>
+                    <p className="text-[9px] text-gray-500 leading-none">{label}</p>
                   </div>
                 ))}
               </div>
-              <div className="pt-2.5 border-t border-gray-100 flex gap-4 text-xs text-gray-500">
-                <span><strong className="text-gray-800">3</strong> tenants</span>
-                <span><strong className="text-gray-800">$4,820</strong> tracked</span>
-                <span><strong className="text-gray-800">0</strong> overdue</span>
+
+              {/* Property card — mirrors real PropertiesTab card */}
+              <div className="bg-white rounded-xl border border-gray-100 overflow-hidden shadow-sm">
+                {/* Street view placeholder */}
+                <div className="h-[86px] bg-gradient-to-br from-slate-200 via-slate-300 to-slate-200 flex items-center justify-center relative">
+                  <Building2 className="w-9 h-9 text-slate-400" />
+                  <div className="absolute bottom-1.5 right-1.5 flex items-center gap-1 bg-white/85 backdrop-blur-sm rounded px-1.5 py-0.5">
+                    <svg width="8" height="8" viewBox="0 0 24 24" fill="none"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" fill="#EA4335"/><circle cx="12" cy="9" r="2.5" fill="white"/></svg>
+                    <span className="text-[7px] text-gray-500 font-medium">Google Maps</span>
+                  </div>
+                </div>
+                {/* Card content */}
+                <div className="px-3 pt-2.5 pb-2">
+                  <div className="flex items-center justify-between mb-0.5">
+                    <p className="text-xs font-bold text-gray-900">Speedway Duplex</p>
+                    <span className="text-[8px] bg-gray-100 text-gray-600 px-1.5 py-0.5 rounded-full font-medium shrink-0 ml-1">Multi-Unit</span>
+                  </div>
+                  <p className="text-[9px] text-gray-500 mb-2">3814 Speedway, Austin, TX 78751</p>
+                  <div className="flex items-center gap-3 text-[9px]">
+                    <span className="flex items-center gap-1 text-gray-500">
+                      <Home className="w-2.5 h-2.5" /> 2 units
+                    </span>
+                    <span className="flex items-center gap-1 text-green-600 font-medium">
+                      <span className="w-1.5 h-1.5 rounded-full bg-green-500 inline-block" /> 0 open tickets
+                    </span>
+                  </div>
+                </div>
               </div>
-            </div>
 
-            {/* Card 3: Monthly expenses chip */}
-            <div className="absolute top-[398px] left-[48px] bg-white/92 backdrop-blur-md rounded-2xl px-5 py-4 shadow-2xl shadow-black/12 border border-white/70">
-              <p className="text-[10px] font-semibold text-gray-400 uppercase tracking-widest mb-1">Monthly Expenses</p>
-              <p className="text-[28px] font-bold text-gray-900 leading-none mb-1">$4,820</p>
-              <p className="text-xs text-primary font-medium">All receipts logged ↑</p>
-            </div>
+              {/* Recent activity */}
+              <div className="bg-white rounded-xl px-3 py-2.5 border border-gray-100 shadow-sm flex items-center gap-2.5">
+                <div className="w-7 h-7 rounded-full bg-green-100 flex items-center justify-center shrink-0">
+                  <CheckCircle className="w-3.5 h-3.5 text-green-600" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-[10px] font-semibold text-gray-800 leading-none mb-0.5">Water heater leak resolved</p>
+                  <p className="text-[9px] text-gray-500">Unit 2A · $185.00 logged</p>
+                </div>
+                <span className="text-[9px] text-gray-400 shrink-0">Just now</span>
+              </div>
 
-            {/* Photo attribution */}
-            <span className="absolute bottom-2.5 right-3 text-[9px] text-white/45 select-none pointer-events-none">
-              Karsten Winegeart / Unsplash
-            </span>
+            </div>
           </div>
 
         </div>
