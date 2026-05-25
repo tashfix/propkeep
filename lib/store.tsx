@@ -34,6 +34,8 @@ type Store = {
 
   attachBooking: (ticketId: string, providerId: string, platform: ServiceProvider["platform"]) => void;
   attachRecurringBooking: (taskId: string, providerId: string, platform: ServiceProvider["platform"]) => void;
+
+  resetToDefaults: () => void;
 };
 
 const DATA_VERSION = "v4";
@@ -215,6 +217,17 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
             : t
         )
       ),
+
+    resetToDefaults: () => {
+      setProperties(defaultData.properties);
+      setTickets(defaultData.tickets);
+      setRecurringTasks(defaultData.recurringTasks);
+      setExpenses(defaultData.expenses);
+      setAppliances(defaultData.appliances);
+      setTenantMessages(defaultData.tenantMessages);
+      localStorage.removeItem("propkeep");
+      localStorage.removeItem("propkeep_version");
+    },
   };
 
   if (!loaded) return null;

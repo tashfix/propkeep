@@ -42,10 +42,16 @@ function ActionRow({ dot, onClick, children }: { dot: "red" | "amber" | "blue"; 
 }
 
 export default function Dashboard() {
-  const { properties, tickets, recurringTasks, expenses, tenantMessages } = useStore();
+  const { properties, tickets, recurringTasks, expenses, tenantMessages, resetToDefaults } = useStore();
   const [activeTab, setActiveTab] = useState<Tab>("overview");
   const [notifOpen, setNotifOpen] = useState(false);
   const notifRef = useRef<HTMLDivElement>(null);
+
+  // Reset to fresh demo state every time this page mounts
+  useEffect(() => {
+    resetToDefaults();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const now = new Date();
   const openTickets = tickets.filter(t => t.status !== "resolved").length;
